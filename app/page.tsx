@@ -11,12 +11,30 @@ const projects = [
 export default function Home() {
   const [message, setMessage] = useState("");
   const [reply, setReply] = useState("Hi! I'm Gokul's personal AI assistant. Ask me about Gokul, projects, skills or goals.");
+  const [loading, setLoading] = useState(false);
 
-  function ask(e: React.FormEvent) {
+  async function ask(e: React.FormEvent) {
     e.preventDefault();
-    if (!message.trim()) return;
-    setReply(`I received: “${message.trim()}” — the AI backend will be connected to Supabase next.`);
-    setMessage("");
+    const text = message.trim();
+    if (!text || loading) return;
+
+    setLoading(true);
+    setReply("Thinking...");
+
+    try {
+      const response = await fetch("/api/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message: text }),
+      });
+      const data = await response.json();
+      setReply(data.reply || data.error || "Sorry, I couldn't generate a response.");
+    } catch {
+      setReply("Unable to reach the AI backend. Please try again.");
+    } finally {
+      setLoading(false);
+      setMessage("");
+    }
   }
 
   return (
@@ -27,7 +45,7 @@ export default function Home() {
         <div className="card"><div className="orb">G</div><p style={{color:'#aaa',lineHeight:1.6}}>A simple home for ideas, projects, skills and the next big thing.</p></div>
       </section>
       <section className="section" id="projects"><div className="eyebrow">Selected work</div><h2>Projects</h2><div className="grid">{projects.map(([name,desc])=><article className="item" key={name}><h3>{name}</h3><p>{desc}</p></article>)}</div></section>
-      <section className="section" id="assistant"><div className="chat card"><div className="eyebrow">Personal AI</div><h2>Ask Gokul AI</h2><p style={{color:'#aaa',lineHeight:1.6}}>{reply}</p><form className="chatbox" onSubmit={ask}><input value={message} onChange={e=>setMessage(e.target.value)} placeholder="Ask something..." aria-label="Ask the assistant"/><button className="button" type="submit">Send</button></form></div></section>
+      <section className="section" id="assistant"><div className="chat card"><div className="eyebrow">Personal AI</div><h2>Ask Gokul AI</h2><p style={{color:'#aaa',lineHeight:1.6}}>{reply}</p><form className="chatbox" onSubmit={ask}><input value={message} onChange={e=>setMessage(e.target.value)} placeholder="Ask something..." aria-label="Ask the assistant" disabled={loading}/><button className="button" type="submit" disabled={loading}>{loading ? "Thinking..." : "Send"}</button></form></div></section>
       <footer className="footer">© 2026 Gokul · Built with Next.js</footer>
     </main>
   );
