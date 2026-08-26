@@ -4,60 +4,14 @@ import { FormEvent, useEffect, useState } from "react";
 import { getSupabaseBrowser } from "@/lib/supabase-browser";
 
 const projects = [
-  ["GKFXL", "Startup operating system"],
-  ["GGE", "AI guidance platform"],
-  ["DRYNN", "Premium apparel platform"],
-  ["Santro", "Multi-vendor marketplace"],
-  ["AgriBot", "Smart agriculture robot"],
+ ["gokul-aibot","GOKUL.AI portfolio","Gokul-aibot"],["agribot","Agriculture robotics","AGRIBOT"],["test-car","Robot/car control","Test-car"],["car-test-2","Car testing","Car-test-2"],["startup-skill-test","Startup and skills","Startup-skill-test-"],["rvs-agri-engg","Agricultural Engineering","RVS-AGRI-ENGG"],["money-tracker","Money tracking","Money-tracker-"],["drynn","Premium apparel","DRYNN"],["blast-symposium-2026-6kon","BLAST Symposium variant","Blast-symposium-2026."],["blast-symposium-2026","BLAST Symposium","Blast-symposium-2026"],["e-commerce-v2-b645","E-commerce V2 variant","E-commerce-v2"],["e-commerce-v2","E-commerce V2","E-commerce-v2"],["the-big-project-v2","The Big Project V2","The-big-project-v2"],["the-big-project","The Big Project","The-big-project-"],["home","Home web project","Home"],["gokul","Gokul web project","Gokul"],["hasan","Hasan project","Hasan-"],["praneesh-project","Praneesh project","Praneesh-project-"],["anti","Anti project","anti"],["santosh-demo","Santosh demo","Santosh-demo"],["trackor","Trackor","Trackor"],["anime","Anime","Anime-"],["flames-1rur","Flames variant","Flames"],["company","Company","Company-"],["elephant","Elephant","Elephant-"],["phoenix","Phoenix","Phoenix"],["dragon","Dragon","Dragon"],["gkfxl","GKFXL startup","GKFXL"],["gge","GGE guidance","SRWP"],["tanne-95rt","TANNE","TANNE"],["gk-fxl-government-j3mo","GKFXL government","gk-fxl-government"],["flames","Flames","Flames-"],["gk-xezus","GkXezus","GkXezus"],["samvidhan-ai-si9t","Samvidhan AI","samvidhan-ai"]
 ];
 
-export default function AdminPage() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [session, setSession] = useState<any>(null);
-  const [error, setError] = useState("");
-  const [busy, setBusy] = useState(false);
-  const supabase = getSupabaseBrowser();
-
-  useEffect(() => {
-    supabase.auth.getSession().then(({ data }) => setSession(data.session));
-    const { data: listener } = supabase.auth.onAuthStateChange((_event, next) => setSession(next));
-    return () => listener.subscription.unsubscribe();
-  }, [supabase]);
-
-  async function login(e: FormEvent) {
-    e.preventDefault(); setBusy(true); setError("");
-    const { data, error } = await supabase.auth.signInWithPassword({ email, password });
-    if (error) setError(error.message); else setSession(data.session);
-    setBusy(false);
-  }
-
-  if (!session) return (
-    <main className="admin-page">
-      <div className="admin-login">
-        <div className="logo"><span className="logo-mark">G</span> GOKUL.AI</div>
-        <div className="eyebrow">PRIVATE ADMIN</div>
-        <h1>Welcome back.</h1>
-        <p>Sign in with your Supabase admin account to manage the portfolio.</p>
-        <form onSubmit={login} className="admin-form">
-          <input type="email" required placeholder="Admin email" value={email} onChange={e => setEmail(e.target.value)} autoComplete="email" />
-          <input type="password" required placeholder="Password" value={password} onChange={e => setPassword(e.target.value)} autoComplete="current-password" />
-          {error && <div className="admin-error">{error}</div>}
-          <button className="button" disabled={busy}>{busy ? "Signing in…" : "Sign in"}</button>
-        </form>
-        <a className="admin-back" href="/">← Back to portfolio</a>
-      </div>
-    </main>
-  );
-
-  return (
-    <main className="admin-page">
-      <div className="admin-shell">
-        <header className="admin-header"><div><div className="eyebrow">GOKUL.AI / ADMIN</div><h1>Dashboard</h1><p>Manage and review your portfolio from one place.</p></div><button className="button secondary" onClick={() => supabase.auth.signOut()}>Sign out</button></header>
-        <section className="admin-stats"><div><b>{projects.length}</b><span>Featured projects</span></div><div><b>AI</b><span>Assistant enabled</span></div><div><b>Live</b><span>Portfolio status</span></div></section>
-        <section className="admin-card"><div className="eyebrow">PROJECTS</div><h2>Portfolio projects</h2><div className="admin-list">{projects.map(([name, desc]) => <div className="admin-row" key={name}><div><strong>{name}</strong><span>{desc}</span></div><span className="status-pill">Published</span></div>)}</div></section>
-        <section className="admin-card"><div className="eyebrow">QUICK ACTIONS</div><h2>Portfolio</h2><div className="actions"><a className="button" href="/">View website</a><a className="button secondary" href="https://github.com/gokulmaniraj2008-collab/Gokul-aibot" target="_blank" rel="noreferrer">GitHub ↗</a></div></section>
-      </div>
-    </main>
-  );
+export default function AdminPage(){
+ const [email,setEmail]=useState(""); const [password,setPassword]=useState(""); const [session,setSession]=useState<any>(null); const [error,setError]=useState(""); const [busy,setBusy]=useState(false); const [query,setQuery]=useState(""); const supabase=getSupabaseBrowser();
+ useEffect(()=>{supabase.auth.getSession().then(({data})=>setSession(data.session));const {data:listener}=supabase.auth.onAuthStateChange((_event,next)=>setSession(next));return()=>listener.subscription.unsubscribe()},[supabase]);
+ async function login(e:FormEvent){e.preventDefault();setBusy(true);setError("");const {data,error}=await supabase.auth.signInWithPassword({email,password});if(error)setError(error.message);else setSession(data.session);setBusy(false)}
+ const filtered=projects.filter(([name,desc,repo])=>`${name} ${desc} ${repo}`.toLowerCase().includes(query.toLowerCase()));
+ if(!session)return <main className="admin-page"><div className="admin-login"><div className="logo"><span className="logo-mark">G</span> GOKUL.AI</div><div className="eyebrow">PRIVATE ADMIN</div><h1>Welcome back.</h1><p>Sign in with your Supabase admin account to manage the portfolio.</p><form onSubmit={login} className="admin-form"><input type="email" required placeholder="Admin email" value={email} onChange={e=>setEmail(e.target.value)} autoComplete="email"/><input type="password" required placeholder="Password" value={password} onChange={e=>setPassword(e.target.value)} autoComplete="current-password"/>{error&&<div className="admin-error">{error}</div>}<button className="button" disabled={busy}>{busy?"Signing in…":"Sign in"}</button></form><a className="admin-back" href="/">← Back to portfolio</a></div></main>;
+ return <main className="admin-page"><div className="admin-shell"><header className="admin-header"><div><div className="eyebrow">GOKUL.AI / ADMIN</div><h1>Dashboard</h1><p>Authenticated admin workspace.</p></div><button className="button secondary" onClick={()=>supabase.auth.signOut()}>Sign out</button></header><section className="admin-stats"><div><b>{projects.length}</b><span>Projects</span></div><div><b>AI</b><span>Assistant</span></div><div><b>Live</b><span>Portfolio</span></div></section><section className="admin-card"><div className="eyebrow">PROJECT CATALOGUE</div><h2>All projects</h2><input className="project-search" value={query} onChange={e=>setQuery(e.target.value)} placeholder="Search projects..." aria-label="Search projects"/><p className="project-count">Showing {filtered.length} of {projects.length}</p><div className="admin-list">{filtered.map(([name,desc,repo])=><div className="admin-row" key={name}><div><strong>{name}</strong><span>{desc}</span></div><div className="actions"><a className="button secondary" href={`https://github.com/gokulmaniraj2008-collab/${repo}`} target="_blank" rel="noreferrer">GitHub ↗</a><a className="button secondary" href={`https://vercel.com/gokulmaniraj2008-collabs-projects/${name}`} target="_blank" rel="noreferrer">Vercel ↗</a></div></div>)}</div></section><section className="admin-card"><div className="eyebrow">QUICK ACTIONS</div><h2>Portfolio</h2><div className="actions"><a className="button" href="/">View website</a><a className="button secondary" href="/#assistant">Open Ask AI</a></div></section></div></main>;
 }
