@@ -17,16 +17,10 @@ export default function Home() {
     e.preventDefault();
     const text = message.trim();
     if (!text || loading) return;
-
     setLoading(true);
     setReply("Thinking...");
-
     try {
-      const response = await fetch("/api/chat", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message: text }),
-      });
+      const response = await fetch("/api/chat", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ message: text }) });
       const data = await response.json();
       setReply(data.reply || data.error || "Sorry, I couldn't generate a response.");
     } catch {
@@ -39,9 +33,15 @@ export default function Home() {
 
   return (
     <main className="page">
-      <nav className="nav"><div className="logo">GOKUL.AI</div><a className="pill" href="#assistant">Ask AI</a></nav>
+      <nav className="nav">
+        <div className="logo">GOKUL.AI</div>
+        <div style={{display:'flex',gap:10,alignItems:'center'}}>
+          <a className="pill" href="/portfolio">Portfolio</a>
+          <a className="pill" href="#assistant">Ask AI</a>
+        </div>
+      </nav>
       <section className="hero">
-        <div><div className="eyebrow">Personal portfolio · Builder · Entrepreneur</div><h1>Build. Learn.<br/>Create.</h1><p>Welcome to Gokul's personal space on the web — a portfolio that also works as an AI-powered assistant.</p><div className="actions"><a className="button" href="#projects">Explore work</a><a className="button secondary" href="#assistant">Talk to AI</a></div></div>
+        <div><div className="eyebrow">Personal portfolio · Builder · Entrepreneur</div><h1>Build. Learn.<br/>Create.</h1><p>Welcome to Gokul's personal space on the web — a portfolio that also works as an AI-powered assistant.</p><div className="actions"><a className="button" href="/portfolio">View Portfolio</a><a className="button secondary" href="#assistant">Talk to AI</a></div></div>
         <div className="card"><div className="orb">G</div><p style={{color:'#aaa',lineHeight:1.6}}>A simple home for ideas, projects, skills and the next big thing.</p></div>
       </section>
       <section className="section" id="projects"><div className="eyebrow">Selected work</div><h2>Projects</h2><div className="grid">{projects.map(([name,desc])=><article className="item" key={name}><h3>{name}</h3><p>{desc}</p></article>)}</div></section>
