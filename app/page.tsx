@@ -1,52 +1,27 @@
 "use client";
-
 import { useState } from "react";
 
-const projects = [
-  ["AgriBot", "Smart agriculture robot with sensors, automation and cloud monitoring."],
-  ["AI Assistant", "A personal assistant designed to organize ideas, tasks and projects."],
-  ["Web Projects", "Modern responsive websites and experiments built with React and Next.js."],
+const projects=[
+  ["AgriBot","Smart agriculture robot with sensors, automation and cloud monitoring."],
+  ["GKFXL","Startup operating system for academy, productivity, teams and business systems."],
+  ["GGE","AI-powered guidance platform for students and rural communities."],
+  ["DRYNN","Premium apparel and custom printing platform."],
+  ["Santro","Multi-vendor commerce platform."],
 ];
-
-export default function Home() {
-  const [message, setMessage] = useState("");
-  const [reply, setReply] = useState("Hi! I'm Gokul's personal AI assistant. Ask me about Gokul, projects, skills or goals.");
-  const [loading, setLoading] = useState(false);
-
-  async function ask(e: React.FormEvent) {
-    e.preventDefault();
-    const text = message.trim();
-    if (!text || loading) return;
-    setLoading(true);
-    setReply("Thinking...");
-    try {
-      const response = await fetch("/api/chat", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ message: text }) });
-      const data = await response.json();
-      setReply(data.reply || data.error || "Sorry, I couldn't generate a response.");
-    } catch {
-      setReply("Unable to reach the AI backend. Please try again.");
-    } finally {
-      setLoading(false);
-      setMessage("");
-    }
-  }
-
-  return (
-    <main className="page">
-      <nav className="nav">
-        <div className="logo">GOKUL.AI</div>
-        <div style={{display:'flex',gap:10,alignItems:'center'}}>
-          <a className="pill" href="/portfolio">Portfolio</a>
-          <a className="pill" href="#assistant">Ask AI</a>
-        </div>
-      </nav>
-      <section className="hero">
-        <div><div className="eyebrow">Personal portfolio · Builder · Entrepreneur</div><h1>Build. Learn.<br/>Create.</h1><p>Welcome to Gokul's personal space on the web — a portfolio that also works as an AI-powered assistant.</p><div className="actions"><a className="button" href="/portfolio">View Portfolio</a><a className="button secondary" href="#assistant">Talk to AI</a></div></div>
-        <div className="card"><div className="orb">G</div><p style={{color:'#aaa',lineHeight:1.6}}>A simple home for ideas, projects, skills and the next big thing.</p></div>
-      </section>
-      <section className="section" id="projects"><div className="eyebrow">Selected work</div><h2>Projects</h2><div className="grid">{projects.map(([name,desc])=><article className="item" key={name}><h3>{name}</h3><p>{desc}</p></article>)}</div></section>
-      <section className="section" id="assistant"><div className="chat card"><div className="eyebrow">Personal AI</div><h2>Ask Gokul AI</h2><p style={{color:'#aaa',lineHeight:1.6}}>{reply}</p><form className="chatbox" onSubmit={ask}><input value={message} onChange={e=>setMessage(e.target.value)} placeholder="Ask something..." aria-label="Ask the assistant" disabled={loading}/><button className="button" type="submit" disabled={loading}>{loading ? "Thinking..." : "Send"}</button></form></div></section>
-      <footer className="footer">© 2026 Gokul · Built with Next.js</footer>
-    </main>
-  );
+const skills=["Next.js","React","TypeScript","JavaScript","Node.js","Supabase","PostgreSQL","Python","AI Engineering","REST APIs","GitHub","Vercel","IoT & Robotics","Hardware","Business Knowledge","Research & Analysis","UI/UX","Agricultural Engineering"];
+export default function Home(){
+ const [message,setMessage]=useState(""); const [reply,setReply]=useState("Hi! I'm Gokul's personal AI assistant. Ask me about Gokul, projects, skills or goals."); const [loading,setLoading]=useState(false);
+ async function ask(e:React.FormEvent){e.preventDefault();const text=message.trim();if(!text||loading)return;setLoading(true);setReply("Thinking...");try{const r=await fetch("/api/chat",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({message:text})});const d=await r.json();setReply(d.reply||d.error||"Sorry, I couldn't generate a response.")}catch{setReply("Unable to reach the AI backend. Please try again.")}finally{setLoading(false);setMessage("")}}
+ return <main className="page">
+  <nav className="nav"><a className="logo" href="#home"><span className="logo-mark">G</span>GOKUL.AI</a><div className="navlinks"><a href="#home">Home</a><a href="#about">About</a><a href="#skills">Skills</a><a href="#projects">Projects</a><a href="#experience">Experience</a><a href="#assistant">Ask AI</a><a href="#contact">Contact</a></div></nav>
+  <section className="hero" id="home"><div><div className="eyebrow">✨ AVAILABLE FOR NEW PROJECTS</div><h1>BUILDING THE FUTURE OF<br/>INTELLIGENT INTERFACES</h1><h2 style={{color:'#E6C15C'}}>G o k u l &nbsp; A I</h2><p>Minimal, high-performance products crafted with Next.js, AI and modern technology.</p><div className="actions"><a className="button" href="#projects">Explore Projects</a><a className="button secondary" href="#contact">Contact</a></div><code>npm i @gokul/core</code></div><div className="card"><div className="orb">G</div><p>AI · Software · Business · Hardware · Research · Agriculture</p></div></section>
+  <section className="section" id="about"><div className="eyebrow">ABOUT</div><h2>Building technology that matters.</h2><p className="lead">I'm Gokul — founder, full-stack developer, AI engineer and Agricultural Engineering student. I build AI software, SaaS, robotics, IoT and smart-agriculture solutions.</p><div className="grid"><article className="item"><h3>Mission</h3><p>Build practical technology for students, startups, businesses, farmers and rural communities.</p></article><article className="item"><h3>Vision</h3><p>Build globally impactful products from India across AI, education, agriculture and automation.</p></article></div></section>
+  <section className="section" id="skills"><div className="eyebrow">SKILLS</div><h2>Technical + practical capability.</h2><div className="tags">{skills.map(s=><span key={s}>{s}</span>)}</div></section>
+  <section className="section" id="projects"><div className="eyebrow">PROJECTS</div><h2>Selected work.</h2><div className="grid">{projects.map(([name,desc])=><article className="item" key={name}><h3>{name}</h3><p>{desc}</p><div className="actions"><a className="button secondary" href={`https://github.com/gokulmaniraj2008-collab/${name.toLowerCase().replaceAll(' ','-')}`} target="_blank">GitHub ↗</a><a className="button secondary" href="#contact">Vercel ↗</a></div></article>)}</div></section>
+  <section className="section" id="experience"><div className="eyebrow">EXPERIENCE</div><h2>Founder · Developer · Builder.</h2><div className="grid"><article className="item"><h3>GKFXL</h3><p>Founder and product builder working across software, AI, business systems and startups.</p></article><article className="item"><h3>Engineering</h3><p>End-to-end development from research and architecture through database, APIs, UI and deployment.</p></article><article className="item"><h3>Hardware & Agriculture</h3><p>Combining agricultural engineering knowledge with robotics, IoT, sensors and automation.</p></article></div></section>
+  <section className="section" id="assistant"><div className="chat card"><div className="eyebrow">PERSONAL AI</div><h2>Ask Gokul AI</h2><p style={{color:'#aaa',lineHeight:1.6}}>{reply}</p><form className="chatbox" onSubmit={ask}><input value={message} onChange={e=>setMessage(e.target.value)} placeholder="Ask about Gokul, projects, skills..." disabled={loading}/><button className="button" type="submit" disabled={loading}>{loading?"Thinking...":"Send"}</button></form></div></section>
+  <section className="section" id="contact"><div className="eyebrow">CONTACT</div><h2>Let's build something useful.</h2><p className="lead">For projects, collaborations, ideas or technology discussions, get in touch.</p><div className="actions"><a className="button" href="mailto:gokul@example.com">Email Gokul</a><a className="button secondary" href="https://github.com/gokulmaniraj2008-collab" target="_blank">GitHub ↗</a></div></section>
+  <div className="mobile-nav"><a href="#home">⌂<span>Home</span></a><a href="#about">◎<span>About</span></a><a href="#skills">✦<span>Skills</span></a><a href="#projects">◆<span>Projects</span></a><a href="#assistant">AI<span>Ask AI</span></a><a href="#contact">✉<span>Contact</span></a></div>
+  <footer className="footer">© 2026 Gokul · GOKUL.AI</footer>
+ </main>;
 }
