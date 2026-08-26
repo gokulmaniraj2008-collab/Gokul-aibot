@@ -1,0 +1,2 @@
+import PortfolioNav from '@/components/PortfolioNav';
+export default function GitHubPage(){return <main className="page"><PortfolioNav/><section className="section page-hero"><div className="eyebrow">GITHUB</div><h1>Open source & experiments.</h1><p className="lead">Explore repositories, prototypes and ongoing experiments across software, AI, robotics and agriculture.</p><a className="button" href="https://github.com/gokulmaniraj2008-collab" target="_blank" rel="noreferrer">View GitHub Profile ↗</a></section><footer className="footer">© 2026 Gokul · GOKUL.AI</footer></main>}
