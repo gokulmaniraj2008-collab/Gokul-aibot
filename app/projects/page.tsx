@@ -10,31 +10,12 @@ const projects = [
 ['Money Tracker','Personal finance tracking application.','Web · Finance','money-tracker','Money-tracker-'],
 ['DRYNN','Digital-first custom apparel and streetwear brand experience.','Next.js · Supabase · Cloudinary','drynn','DRYNN'],
 ['BLAST Symposium 2026','Symposium and event web platform.','Events · Web · Product','blast-symposium-2026','Blast-symposium-2026'],
-['BLAST Symposium 2026 — Alt','Alternate symposium deployment.','Events · Web · Product','blast-symposium-2026-6kon','Blast-symposium-2026.'],
 ['E-commerce V2','E-commerce storefront and product experience.','E-commerce · Web','e-commerce-v2','E-commerce-v2'],
-['E-commerce V2 — Build','Alternate e-commerce deployment.','E-commerce · Web','e-commerce-v2-b645','E-commerce-v2'],
-['The Big Project V2','Large project and product experiment.','Web · Product','the-big-project-v2','The-big-project-v2'],
-['The Big Project','Original large project and product experiment.','Web · Product','the-big-project','The-big-project-'],
-['Home','Web project and interface experiment.','Web · UI','home','Home'],
-['Gokul','Personal software project.','Web · Development','gokul','Gokul'],
-['Hasan','Collaborative software project.','Web · Development','hasan','Hasan-'],
-['Praneesh Project','Collaborative project and prototype.','Web · Prototype','praneesh-project','Praneesh-project-'],
-['Anti','Software project and experiment.','Development · Prototype','anti','anti'],
-['Santosh Demo','Demo and prototype application.','Web · Demo','santosh-demo','Santosh-demo'],
-['Trackor','Tracking and application project.','Software · Development','trackor','Trackor'],
-['Anime','Anime-themed web experiment.','Web · UI · Prototype','anime','Anime-'],
-['Flames 1','Interactive web experiment.','Web · Interactive','flames-1rur','Flames'],
-['Company','Company website and product experiment.','Web · Business','company','Company-'],
-['Elephant','Software and creative web experiment.','Web · Prototype','elephant','Elephant-'],
-['Phoenix','Software project and experiment.','Development · Prototype','phoenix','Phoenix'],
-['Dragon','Software project and experiment.','Development · Prototype','dragon','Dragon'],
+['The Big Project','Large project and product experiment.','Web · Product','the-big-project','The-big-project-'],
 ['GKFXL','Startup and technology ecosystem.','Next.js · Supabase · TypeScript','gkfxl','GKFXL'],
 ['GGE','AI-powered guidance platform.','Next.js · AI · Tailwind CSS','gge','SRWP'],
-['TANNE','Project and product work.','Web · Product · Development','tanne-95rt','TANNE'],
 ['GKFXL Government','Government information and technology project.','Web · Information','gk-fxl-government-j3mo','gk-fxl-government'],
-['Flames','Interactive web experiment.','Web · Interactive','flames','Flames-'],
-['GK Xezus','Software and product experiment.','Web · Prototype','gk-xezus','GkXezus'],
 ['Samvidhan AI','AI-focused information and application project.','AI · Web · Product','samvidhan-ai-si9t','samvidhan-ai']
 ];
 
-export default function Projects(){return <main className="page"><PortfolioNav/><section className="section page-hero"><div className="eyebrow">PROJECTS</div><h1>Selected work & Vercel projects.</h1><p className="lead">All projects in the Gokul Vercel workspace, with direct GitHub and Vercel links. AGRIBOT is listed for discovery but remains a separate project.</p><div className="grid">{projects.map(([n,d,s,slug,repo])=><article className="item" key={slug}><h3>{n}</h3><p>{d}</p><p><strong>{s}</strong></p><div className="project-actions"><a className="project-link" href={'https://vercel.com/gokulmaniraj2008-collabs-projects/'+slug} target="_blank" rel="noreferrer">Vercel ↗</a><a className="project-link" href={'https://github.com/gokulmaniraj2008-collab/'+repo} target="_blank" rel="noreferrer">GitHub ↗</a></div></article>)}</div></section><footer className="footer">© 2026 Gokul · GOKUL.AI</footer></main>}
+export default function Projects(){return <main className="page"><PortfolioNav/><section className="section page-hero"><div className="eyebrow">PROJECTS</div><h1>Selected work & Vercel projects.</h1><p className="lead">Software, robotics, agriculture and product experiments, with direct GitHub and Vercel links.</p><div className="grid">{projects.map(([n,d,s,slug,repo])=><article className="item" key={slug}><h3>{n}</h3><p>{d}</p><p><strong>{s}</strong></p><div className="project-actions"><a className="project-link" href={'https://vercel.com/gokulmaniraj2008-collabs-projects/'+slug} target="_blank" rel="noreferrer">Vercel ↗</a><a className="project-link" href={'https://github.com/gokulmaniraj2008-collab/'+repo} target="_blank" rel="noreferrer">GitHub ↗</a>{slug==='agribot'&&<a className="project-link" href="/projects/agri-bot">Details ↗</a>}{slug==='gokul-aibot'&&<a className="project-link" href="/">Open ↗</a>}</div></article>)}</div></section><footer className="footer">© 2026 Gokul · GOKUL.AI</footer></main>}
