@@ -1,0 +1,3 @@
+import PortfolioNav from '@/components/PortfolioNav';
+
+export default function EducationPage(){return <main className="page"><PortfolioNav/><section className="section page-hero"><div className="eyebrow">EDUCATION</div><h1>Engineering with an agricultural focus.</h1><div className="grid"><article className="item"><h3>B.Tech Agricultural Engineering</h3><p><strong>RVS Technical Campus, Coimbatore</strong></p><p>2025 — Present · Affiliated to Anna University, Chennai.</p><p>Focus: agricultural technology, sustainable farming and modern engineering solutions.</p></article></div></section><footer className="footer">© 2026 Gokul · Education</footer></main>}
