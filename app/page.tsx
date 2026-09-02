@@ -1,4 +1,81 @@
 "use client";
-import {useMemo,useState} from "react";
-const crops=[{name:"Tomato",stage:"Flowering",water:42,risk:"Low"},{name:"Chilli",stage:"Vegetative",water:68,risk:"Medium"},{name:"Cucumber",stage:"Harvest",water:31,risk:"Low"}];
-export default function Home(){const[q,setQ]=useState("");const[selected,setSelected]=useState(crops[0]);const[done,setDone]=useState<string[]>([]);const filtered=useMemo(()=>crops.filter(c=>`${c.name} ${c.stage}`.toLowerCase().includes(q.toLowerCase())),[q]);const toggle=(x:string)=>setDone(a=>a.includes(x)?a.filter(y=>y!==x):[...a,x]);return <main style={{minHeight:"100vh",background:"#f4f7f2",color:"#183126",fontFamily:"Inter,system-ui,sans-serif",padding:"20px 16px 90px"}}><div style={{maxWidth:1000,margin:"auto"}}><header style={{display:"flex",justifyContent:"space-between",alignItems:"center"}}><b style={{fontSize:24}}>Field<span style={{color:"#2f7d4a"}}>Note</span></b><span style={{fontSize:12,color:"#6a7a70"}}>01 Sep 2026 · Greenhouse</span></header><section style={{display:"grid",gridTemplateColumns:"1.2fr .8fr",gap:16,margin:"28px 0 18px"}}><div><small style={{color:"#2f7d4a",fontWeight:800,letterSpacing:2}}>SMART CROP COMPANION</small><h1 style={{fontSize:"clamp(40px,8vw,72px)",lineHeight:.95,letterSpacing:-3,margin:"12px 0"}}>See the field.<br/><span style={{color:"#2f7d4a"}}>Act earlier.</span></h1><p style={{color:"#6a7a70",fontSize:16,lineHeight:1.6,maxWidth:600}}>A calm daily dashboard for crop checks, moisture signals and practical next actions.</p></div><div style={{background:"white",border:"1px solid #dfe8df",borderRadius:24,padding:20}}><div style={{color:"#6a7a70",fontSize:13}}>Today’s readiness</div><div style={{fontSize:54,fontWeight:800}}>82%</div><div style={{height:10,background:"#edf2ed",borderRadius:99}}><i style={{display:"block",width:"82%",height:"100%",background:"#2f7d4a",borderRadius:99}}/></div><div style={{display:"flex",justifyContent:"space-between",marginTop:16,color:"#6a7a70",fontSize:12}}><span>3 beds monitored</span><span>Last sync 08:42</span></div></div></section><section style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:16}}><article style={{background:"white",border:"1px solid #dfe8df",borderRadius:24,padding:18}}><h2>Crop watchlist</h2><input value={q} onChange={e=>setQ(e.target.value)} placeholder="Search crop…" style={{width:"100%",padding:11,borderRadius:12,border:"1px solid #dfe8df",marginBottom:12}}/>{filtered.map(c=><button key={c.name} onClick={()=>setSelected(c)} style={{width:"100%",display:"flex",justifyContent:"space-between",padding:12,margin:"8px 0",borderRadius:16,border:c.name===selected.name?"1px solid #8fc39d":"1px solid #dfe8df",background:c.name===selected.name?"#dff2df":"white",textAlign:"left"}}><span><b>{c.name}</b><br/><small style={{color:"#6a7a70"}}>{c.stage}</small></span><span style={{fontSize:12}}>{c.water}% moisture<br/><small style={{color:c.risk==="Low"?"#2f7d4a":"#a36a00"}}>{c.risk} risk</small></span></button>)}</article><article style={{background:"white",border:"1px solid #dfe8df",borderRadius:24,padding:18}}><small style={{color:"#2f7d4a",fontWeight:800,letterSpacing:2}}>SELECTED BED</small><h2 style={{fontSize:32,margin:"8px 0"}}>{selected.name}</h2><p style={{color:"#6a7a70"}}>{selected.stage} · live recommendation</p><div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:10}}>{[["Moisture",`${selected.water}%`],["Air temp","28°"],["Next check","2h"]].map(([a,b])=><div key={a} style={{padding:12,border:"1px solid #dfe8df",borderRadius:16}}><small style={{color:"#6a7a70"}}>{a}</small><b style={{display:"block",fontSize:24,marginTop:4}}>{b}</b></div>)}</div><p style={{background:"#f2f7f2",padding:12,borderRadius:14,color:"#6a7a70",lineHeight:1.5}}>Check leaf undersides and keep the greenhouse ventilated before noon.</p></article><article style={{background:"white",border:"1px solid #dfe8df",borderRadius:24,padding:18}}><h2>Today’s routine</h2>{["Inspect leaves for stress","Record moisture after irrigation","Review tomorrow’s harvest list"].map(x=><label key={x} style={{display:"flex",gap:10,alignItems:"center",padding:11,border:"1px solid #dfe8df",borderRadius:14,margin:"8px 0",textDecoration:done.includes(x)?"line-through":"none",color:done.includes(x)?"#98a69c":"inherit"}}><input type="checkbox" checked={done.includes(x)} onChange={()=>toggle(x)}/>{x}</label>)}</article><article style={{background:"white",border:"1px solid #dfe8df",borderRadius:24,padding:18}}><h2>Quick read</h2><p style={{color:"#6a7a70",lineHeight:1.7}}>Small signals compound. A 30-second observation today can prevent a full-day problem tomorrow.</p><div style={{background:"#dff2df",padding:12,borderRadius:14}}>Tip: use the watchlist to focus your next patrol.</div></article></section><footer style={{display:"flex",justifyContent:"space-between",paddingTop:24,color:"#6a7a70",fontSize:12}}><span>FieldNote · agriculture utility</span><span>Mobile first</span></footer></div></main>}
+import { useMemo, useState } from "react";
+
+const lessons = [
+  { id: 1, subject: "Soil & Water", topic: "Infiltration basics", minutes: 18, level: "Core" },
+  { id: 2, subject: "Farm Machinery", topic: "Power transmission", minutes: 24, level: "Core" },
+  { id: 3, subject: "Greenhouse Tech", topic: "Ventilation checklist", minutes: 12, level: "Quick" },
+  { id: 4, subject: "Agri Economics", topic: "Break-even point", minutes: 20, level: "Practice" },
+];
+
+export default function Home() {
+  const [query, setQuery] = useState("");
+  const [completed, setCompleted] = useState<number[]>([2]);
+  const [streak, setStreak] = useState(6);
+
+  const filtered = useMemo(
+    () => lessons.filter((l) => `${l.subject} ${l.topic}`.toLowerCase().includes(query.toLowerCase())),
+    [query]
+  );
+
+  const toggle = (id: number) => {
+    setCompleted((items) => (items.includes(id) ? items.filter((x) => x !== id) : [...items, id]));
+  };
+
+  const progress = Math.round((completed.length / lessons.length) * 100);
+
+  return (
+    <main className="page">
+      <div className="shell">
+        <header className="topbar">
+          <div>
+            <div className="brand">Study<span>Sprint</span></div>
+            <div className="sub">A focused revision desk for busy students</div>
+          </div>
+          <div className="streak"><strong>🔥 {streak}</strong><span>day streak</span></div>
+        </header>
+
+        <section className="hero">
+          <div>
+            <div className="eyebrow">WEDNESDAY · 02 SEPTEMBER 2026</div>
+            <h1>Make revision<br /><em>feel lighter.</em></h1>
+            <p>Pick a short lesson, finish the loop, and leave with a clearer head than you started with.</p>
+          </div>
+          <div className="focus-card">
+            <div className="label">TODAY’S FOCUS</div>
+            <div className="focus-title">Finish one core lesson</div>
+            <div className="progress-row"><span>{completed.length} of {lessons.length} complete</span><b>{progress}%</b></div>
+            <div className="track"><i style={{ width: `${progress}%` }} /></div>
+            <button onClick={() => toggle(1)}>{completed.includes(1) ? "Completed" : "Start next lesson"}</button>
+          </div>
+        </section>
+
+        <section className="layout">
+          <div className="panel lessons-panel">
+            <div className="panel-head"><div><div className="eyebrow">YOUR QUEUE</div><h2>Short lessons</h2></div><span className="count">{filtered.length} items</span></div>
+            <input className="search" value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Search a subject or topic…" />
+            <div className="lesson-list">
+              {filtered.map((lesson) => (
+                <button className={`lesson ${completed.includes(lesson.id) ? "done" : ""}`} key={lesson.id} onClick={() => toggle(lesson.id)}>
+                  <span className="dot">{completed.includes(lesson.id) ? "✓" : lesson.id}</span>
+                  <span className="lesson-copy"><strong>{lesson.topic}</strong><small>{lesson.subject} · {lesson.level}</small></span>
+                  <span className="mins">{lesson.minutes} min</span>
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <aside className="side-stack">
+            <div className="panel note-panel"><div className="eyebrow">RESET RULE</div><h3>Study small.<br />Return often.</h3><p>When your attention drops, reduce the task before you increase the pressure.</p><div className="quote">“Consistency beats intensity when the semester gets busy.”</div></div>
+            <div className="panel stats-panel"><div className="panel-head"><div><div className="eyebrow">THIS WEEK</div><h2>Your rhythm</h2></div><span className="trend">+18%</span></div><div className="bars">{[28, 56, 42, 74, 62, 88, 46].map((h, i) => <div className="bar-col" key={i}><i style={{ height: `${h}%` }} /><small>{["M","T","W","T","F","S","S"][i]}</small></div>)}</div><button className="ghost" onClick={() => setStreak((s) => s + 1)}>Log today’s win</button></div>
+          </aside>
+        </section>
+
+        <footer><span>StudySprint · education utility</span><span>Built for mobile focus</span></footer>
+      </div>
+      <style jsx>{`
+        :global(*){box-sizing:border-box}:global(body){margin:0;font-family:Inter,system-ui,sans-serif;background:#f5f6fb;color:#1d2433}.page{min-height:100vh;padding:18px 14px 40px;background:radial-gradient(circle at 10% 0%,#fff 0,#f5f6fb 42%,#eef1f8 100%)}.shell{max-width:1080px;margin:auto}.topbar{display:flex;justify-content:space-between;align-items:center;gap:16px}.brand{font-size:25px;font-weight:850;letter-spacing:-1px}.brand span{color:#6457d9}.sub{font-size:12px;color:#7a8293;margin-top:3px}.streak{display:flex;flex-direction:column;align-items:flex-end;gap:2px;color:#7a8293;font-size:12px}.streak strong{font-size:18px;color:#242a3a}.hero{display:grid;grid-template-columns:1.1fr .9fr;gap:18px;align-items:end;padding:56px 0 26px}.eyebrow{font-size:11px;letter-spacing:.16em;font-weight:800;color:#7b8393}.hero h1{font-size:clamp(42px,8vw,76px);line-height:.96;letter-spacing:-4px;margin:12px 0}.hero h1 em{font-style:normal;color:#6457d9}.hero p{max-width:600px;color:#6e7788;line-height:1.65;font-size:16px}.focus-card,.panel{background:rgba(255,255,255,.9);border:1px solid #e3e6f0;border-radius:24px;box-shadow:0 12px 30px rgba(54,67,105,.06)}.focus-card{padding:22px}.label{font-size:11px;letter-spacing:.15em;font-weight:800;color:#7b8393}.focus-title{font-size:24px;font-weight:800;margin:14px 0 18px}.progress-row{display:flex;justify-content:space-between;color:#737c8e;font-size:12px}.progress-row b{color:#252c3a}.track{height:10px;background:#edeff6;border-radius:99px;overflow:hidden;margin:10px 0 18px}.track i{display:block;height:100%;background:#6457d9;border-radius:99px}.focus-card button,.ghost{border:0;border-radius:14px;padding:12px 14px;background:#1e2635;color:white;font-weight:750;cursor:pointer}.layout{display:grid;grid-template-columns:1.25fr .75fr;gap:18px}.panel{padding:20px}.panel-head{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}.panel h2{font-size:22px;margin:8px 0 14px}.count,.trend{font-size:12px;color:#7b8393}.trend{color:#3f9365;font-weight:800}.search{width:100%;padding:13px 14px;border:1px solid #e1e4ee;border-radius:14px;font:inherit;outline:none;margin-bottom:10px}.lesson-list{display:grid;gap:8px}.lesson{width:100%;display:flex;align-items:center;gap:12px;border:1px solid #e5e8f1;background:#fff;border-radius:16px;padding:13px;text-align:left;cursor:pointer}.lesson:hover{border-color:#b9b2f0}.lesson.done{background:#f4f3ff}.dot{width:28px;height:28px;border-radius:10px;background:#ece9ff;color:#6457d9;display:grid;place-items:center;font-weight:800;flex:0 0 auto}.lesson-copy{display:flex;flex-direction:column;gap:3px;min-width:0}.lesson-copy strong{font-size:14px}.lesson-copy small{color:#7b8393;font-size:12px}.mins{margin-left:auto;color:#7b8393;font-size:12px}.side-stack{display:grid;gap:18px}.note-panel{background:#252b3b;color:#fff;border-color:#252b3b}.note-panel .eyebrow{color:#aeb4c6}.note-panel h3{font-size:32px;line-height:1.04;letter-spacing:-1px;margin:12px 0}.note-panel p{color:#c3c8d4;line-height:1.6}.quote{border-top:1px solid #434b60;padding-top:14px;color:#d8dbe4;font-size:13px;line-height:1.5}.bars{display:flex;align-items:end;justify-content:space-between;height:150px;padding:12px 2px 0}.bar-col{height:100%;display:flex;flex-direction:column;justify-content:end;align-items:center;gap:8px;color:#8a92a2;font-size:11px}.bar-col i{display:block;width:18px;border-radius:8px 8px 3px 3px;background:#bcb5f0;min-height:10px}.bar-col:nth-child(3) i,.bar-col:nth-child(6) i{background:#6457d9}.ghost{background:#f1efff;color:#6457d9;margin-top:12px;width:100%}footer{display:flex;justify-content:space-between;color:#8991a0;font-size:12px;padding:20px 2px 0}@media(max-width:760px){.hero,.layout{grid-template-columns:1fr}.hero{padding-top:36px}.focus-card{margin-top:4px}.side-stack{grid-template-columns:1fr 1fr}.note-panel h3{font-size:25px}}@media(max-width:520px){.side-stack{grid-template-columns:1fr}footer{flex-direction:column;gap:8px}}
+      `}</style>
+    </main>
+  );
+}
