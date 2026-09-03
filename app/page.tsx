@@ -1,81 +1,29 @@
 "use client";
 import { useMemo, useState } from "react";
 
-const lessons = [
-  { id: 1, subject: "Soil & Water", topic: "Infiltration basics", minutes: 18, level: "Core" },
-  { id: 2, subject: "Farm Machinery", topic: "Power transmission", minutes: 24, level: "Core" },
-  { id: 3, subject: "Greenhouse Tech", topic: "Ventilation checklist", minutes: 12, level: "Quick" },
-  { id: 4, subject: "Agri Economics", topic: "Break-even point", minutes: 20, level: "Practice" },
+const seed = [
+  { id: 1, name: "Food & groceries", amount: 4200, tone: "Essential" },
+  { id: 2, name: "Transport", amount: 1800, tone: "Essential" },
+  { id: 3, name: "Learning", amount: 1200, tone: "Growth" },
+  { id: 4, name: "Fun & extras", amount: 900, tone: "Flex" },
 ];
 
 export default function Home() {
-  const [query, setQuery] = useState("");
-  const [completed, setCompleted] = useState<number[]>([2]);
-  const [streak, setStreak] = useState(6);
-
-  const filtered = useMemo(
-    () => lessons.filter((l) => `${l.subject} ${l.topic}`.toLowerCase().includes(query.toLowerCase())),
-    [query]
-  );
-
-  const toggle = (id: number) => {
-    setCompleted((items) => (items.includes(id) ? items.filter((x) => x !== id) : [...items, id]));
-  };
-
-  const progress = Math.round((completed.length / lessons.length) * 100);
-
-  return (
-    <main className="page">
-      <div className="shell">
-        <header className="topbar">
-          <div>
-            <div className="brand">Study<span>Sprint</span></div>
-            <div className="sub">A focused revision desk for busy students</div>
-          </div>
-          <div className="streak"><strong>🔥 {streak}</strong><span>day streak</span></div>
-        </header>
-
-        <section className="hero">
-          <div>
-            <div className="eyebrow">WEDNESDAY · 02 SEPTEMBER 2026</div>
-            <h1>Make revision<br /><em>feel lighter.</em></h1>
-            <p>Pick a short lesson, finish the loop, and leave with a clearer head than you started with.</p>
-          </div>
-          <div className="focus-card">
-            <div className="label">TODAY’S FOCUS</div>
-            <div className="focus-title">Finish one core lesson</div>
-            <div className="progress-row"><span>{completed.length} of {lessons.length} complete</span><b>{progress}%</b></div>
-            <div className="track"><i style={{ width: `${progress}%` }} /></div>
-            <button onClick={() => toggle(1)}>{completed.includes(1) ? "Completed" : "Start next lesson"}</button>
-          </div>
-        </section>
-
-        <section className="layout">
-          <div className="panel lessons-panel">
-            <div className="panel-head"><div><div className="eyebrow">YOUR QUEUE</div><h2>Short lessons</h2></div><span className="count">{filtered.length} items</span></div>
-            <input className="search" value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Search a subject or topic…" />
-            <div className="lesson-list">
-              {filtered.map((lesson) => (
-                <button className={`lesson ${completed.includes(lesson.id) ? "done" : ""}`} key={lesson.id} onClick={() => toggle(lesson.id)}>
-                  <span className="dot">{completed.includes(lesson.id) ? "✓" : lesson.id}</span>
-                  <span className="lesson-copy"><strong>{lesson.topic}</strong><small>{lesson.subject} · {lesson.level}</small></span>
-                  <span className="mins">{lesson.minutes} min</span>
-                </button>
-              ))}
-            </div>
-          </div>
-
-          <aside className="side-stack">
-            <div className="panel note-panel"><div className="eyebrow">RESET RULE</div><h3>Study small.<br />Return often.</h3><p>When your attention drops, reduce the task before you increase the pressure.</p><div className="quote">“Consistency beats intensity when the semester gets busy.”</div></div>
-            <div className="panel stats-panel"><div className="panel-head"><div><div className="eyebrow">THIS WEEK</div><h2>Your rhythm</h2></div><span className="trend">+18%</span></div><div className="bars">{[28, 56, 42, 74, 62, 88, 46].map((h, i) => <div className="bar-col" key={i}><i style={{ height: `${h}%` }} /><small>{["M","T","W","T","F","S","S"][i]}</small></div>)}</div><button className="ghost" onClick={() => setStreak((s) => s + 1)}>Log today’s win</button></div>
-          </aside>
-        </section>
-
-        <footer><span>StudySprint · education utility</span><span>Built for mobile focus</span></footer>
-      </div>
-      <style jsx>{`
-        :global(*){box-sizing:border-box}:global(body){margin:0;font-family:Inter,system-ui,sans-serif;background:#f5f6fb;color:#1d2433}.page{min-height:100vh;padding:18px 14px 40px;background:radial-gradient(circle at 10% 0%,#fff 0,#f5f6fb 42%,#eef1f8 100%)}.shell{max-width:1080px;margin:auto}.topbar{display:flex;justify-content:space-between;align-items:center;gap:16px}.brand{font-size:25px;font-weight:850;letter-spacing:-1px}.brand span{color:#6457d9}.sub{font-size:12px;color:#7a8293;margin-top:3px}.streak{display:flex;flex-direction:column;align-items:flex-end;gap:2px;color:#7a8293;font-size:12px}.streak strong{font-size:18px;color:#242a3a}.hero{display:grid;grid-template-columns:1.1fr .9fr;gap:18px;align-items:end;padding:56px 0 26px}.eyebrow{font-size:11px;letter-spacing:.16em;font-weight:800;color:#7b8393}.hero h1{font-size:clamp(42px,8vw,76px);line-height:.96;letter-spacing:-4px;margin:12px 0}.hero h1 em{font-style:normal;color:#6457d9}.hero p{max-width:600px;color:#6e7788;line-height:1.65;font-size:16px}.focus-card,.panel{background:rgba(255,255,255,.9);border:1px solid #e3e6f0;border-radius:24px;box-shadow:0 12px 30px rgba(54,67,105,.06)}.focus-card{padding:22px}.label{font-size:11px;letter-spacing:.15em;font-weight:800;color:#7b8393}.focus-title{font-size:24px;font-weight:800;margin:14px 0 18px}.progress-row{display:flex;justify-content:space-between;color:#737c8e;font-size:12px}.progress-row b{color:#252c3a}.track{height:10px;background:#edeff6;border-radius:99px;overflow:hidden;margin:10px 0 18px}.track i{display:block;height:100%;background:#6457d9;border-radius:99px}.focus-card button,.ghost{border:0;border-radius:14px;padding:12px 14px;background:#1e2635;color:white;font-weight:750;cursor:pointer}.layout{display:grid;grid-template-columns:1.25fr .75fr;gap:18px}.panel{padding:20px}.panel-head{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}.panel h2{font-size:22px;margin:8px 0 14px}.count,.trend{font-size:12px;color:#7b8393}.trend{color:#3f9365;font-weight:800}.search{width:100%;padding:13px 14px;border:1px solid #e1e4ee;border-radius:14px;font:inherit;outline:none;margin-bottom:10px}.lesson-list{display:grid;gap:8px}.lesson{width:100%;display:flex;align-items:center;gap:12px;border:1px solid #e5e8f1;background:#fff;border-radius:16px;padding:13px;text-align:left;cursor:pointer}.lesson:hover{border-color:#b9b2f0}.lesson.done{background:#f4f3ff}.dot{width:28px;height:28px;border-radius:10px;background:#ece9ff;color:#6457d9;display:grid;place-items:center;font-weight:800;flex:0 0 auto}.lesson-copy{display:flex;flex-direction:column;gap:3px;min-width:0}.lesson-copy strong{font-size:14px}.lesson-copy small{color:#7b8393;font-size:12px}.mins{margin-left:auto;color:#7b8393;font-size:12px}.side-stack{display:grid;gap:18px}.note-panel{background:#252b3b;color:#fff;border-color:#252b3b}.note-panel .eyebrow{color:#aeb4c6}.note-panel h3{font-size:32px;line-height:1.04;letter-spacing:-1px;margin:12px 0}.note-panel p{color:#c3c8d4;line-height:1.6}.quote{border-top:1px solid #434b60;padding-top:14px;color:#d8dbe4;font-size:13px;line-height:1.5}.bars{display:flex;align-items:end;justify-content:space-between;height:150px;padding:12px 2px 0}.bar-col{height:100%;display:flex;flex-direction:column;justify-content:end;align-items:center;gap:8px;color:#8a92a2;font-size:11px}.bar-col i{display:block;width:18px;border-radius:8px 8px 3px 3px;background:#bcb5f0;min-height:10px}.bar-col:nth-child(3) i,.bar-col:nth-child(6) i{background:#6457d9}.ghost{background:#f1efff;color:#6457d9;margin-top:12px;width:100%}footer{display:flex;justify-content:space-between;color:#8991a0;font-size:12px;padding:20px 2px 0}@media(max-width:760px){.hero,.layout{grid-template-columns:1fr}.hero{padding-top:36px}.focus-card{margin-top:4px}.side-stack{grid-template-columns:1fr 1fr}.note-panel h3{font-size:25px}}@media(max-width:520px){.side-stack{grid-template-columns:1fr}footer{flex-direction:column;gap:8px}}
-      `}</style>
-    </main>
-  );
+  const [income, setIncome] = useState(12000);
+  const [expenses, setExpenses] = useState(seed);
+  const [name, setName] = useState("");
+  const [amount, setAmount] = useState("");
+  const spent = expenses.reduce((s, x) => s + x.amount, 0);
+  const left = income - spent;
+  const rate = income ? Math.max(0, Math.min(100, Math.round((left / income) * 100))) : 0;
+  const top = useMemo(() => [...expenses].sort((a, b) => b.amount - a.amount)[0], [expenses]);
+  const add = () => { const value = Number(amount); if (!name.trim() || !value) return; setExpenses((x) => [...x, { id: Date.now(), name: name.trim(), amount: value, tone: "New" }]); setName(""); setAmount(""); };
+  return <main className="page"><div className="shell">
+    <header className="top"><div><div className="brand">Pocket<span>Budget</span></div><div className="muted">A calmer way to see where your money goes</div></div><div className="badge">Finance utility</div></header>
+    <section className="hero"><div><div className="eyebrow">SEPTEMBER SNAPSHOT</div><h1>Spend with<br/><em>more intention.</em></h1><p>Keep the important numbers visible, make small adjustments, and protect what you want to save.</p></div><div className="balance"><div className="muted">Available this month</div><div className="big">₹{left.toLocaleString("en-IN")}</div><div className="bar"><i style={{width:`${rate}%`}}/></div><div className="balance-row"><span>{rate}% of income left</span><strong>₹{income.toLocaleString("en-IN")} income</strong></div></div></section>
+    <section className="grid"><div className="panel"><div className="panel-head"><div><div className="eyebrow">MONTHLY PLAN</div><h2>Set your income</h2></div><span className="icon">₹</span></div><div className="income-row"><span>Take-home income</span><label>₹<input value={income} onChange={(e)=>setIncome(Number(e.target.value)||0)} /></label></div><div className="tip">Your biggest category is <b>{top?.name}</b>. A small trim there creates the fastest breathing room.</div></div><div className="panel dark"><div className="eyebrow light">QUICK READ</div><div className="dark-number">₹{spent.toLocaleString("en-IN")}</div><div className="light">tracked spending</div><div className="mini-grid"><div><b>{expenses.length}</b><span>categories</span></div><div><b>₹{Math.max(0,left).toLocaleString("en-IN")}</b><span>buffer</span></div></div></div></section>
+    <section className="panel"><div className="panel-head"><div><div className="eyebrow">YOUR CATEGORIES</div><h2>Where it goes</h2></div><span className="muted">Tap to review</span></div><div className="list">{expenses.map((x)=><div className="row" key={x.id}><div className="dot"/><div className="copy"><b>{x.name}</b><span>{x.tone}</span></div><strong>₹{x.amount.toLocaleString("en-IN")}</strong></div>)}</div><div className="add"><input placeholder="New category" value={name} onChange={(e)=>setName(e.target.value)}/><input placeholder="Amount" inputMode="numeric" value={amount} onChange={(e)=>setAmount(e.target.value)}/><button onClick={add}>Add</button></div></section>
+    <footer><span>PocketBudget · built for quick decisions</span><span>Mobile-first · no sign-in</span></footer>
+    <style jsx>{`*{box-sizing:border-box}.page{min-height:100vh;background:linear-gradient(135deg,#f6f7fb,#eef1f7);padding:18px 14px 42px;color:#202634;font-family:Inter,system-ui,sans-serif}.shell{max-width:1060px;margin:auto}.top{display:flex;justify-content:space-between;gap:14px;align-items:flex-start}.brand{font-size:25px;font-weight:850;letter-spacing:-1px}.brand span{color:#3f7d67}.muted{font-size:12px;color:#7c8492;margin-top:4px}.badge{border:1px solid #d9dde7;border-radius:99px;padding:8px 11px;font-size:12px;color:#6d7584;background:#fff}.hero{display:grid;grid-template-columns:1.1fr .9fr;gap:18px;align-items:end;padding:58px 0 24px}.eyebrow{font-size:11px;letter-spacing:.16em;font-weight:800;color:#7b8492}.hero h1{font-size:clamp(42px,8vw,76px);line-height:.95;letter-spacing:-4px;margin:12px 0}.hero h1 em{font-style:normal;color:#3f7d67}.hero p{max-width:600px;color:#717a89;line-height:1.65}.balance,.panel{border:1px solid #e0e4ec;border-radius:24px;background:rgba(255,255,255,.92);box-shadow:0 14px 32px rgba(43,57,90,.06)}.balance{padding:22px}.big{font-size:46px;font-weight:850;letter-spacing:-2px;margin:10px 0 18px}.bar{height:10px;background:#e8ebf1;border-radius:99px;overflow:hidden}.bar i{display:block;height:100%;background:#3f7d67;border-radius:99px}.balance-row{display:flex;justify-content:space-between;font-size:12px;color:#747d8e;margin-top:10px}.balance-row strong{color:#273040}.grid{display:grid;grid-template-columns:1.1fr .9fr;gap:18px;margin-bottom:18px}.panel{padding:20px}.panel-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}.panel h2{font-size:22px;margin:8px 0 16px}.icon{width:34px;height:34px;border-radius:12px;background:#e7f2ec;color:#3f7d67;display:grid;place-items:center;font-weight:900}.income-row{display:flex;justify-content:space-between;align-items:center;padding:14px 0;border-top:1px solid #edf0f4;border-bottom:1px solid #edf0f4}.income-row label{display:flex;gap:4px;align-items:center;font-weight:800}.income-row input{width:110px;border:0;background:#f4f6fa;border-radius:10px;padding:10px;font:inherit;font-weight:800}.tip{font-size:13px;color:#6f7887;line-height:1.55;margin-top:14px}.dark{background:#253143;color:#fff;border-color:#253143}.light{color:#b8c2d1;font-size:12px}.dark-number{font-size:42px;font-weight:850;margin:14px 0 2px}.mini-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:24px}.mini-grid div{border-top:1px solid #465367;padding-top:10px}.mini-grid b{display:block;font-size:18px}.mini-grid span{font-size:11px;color:#b8c2d1}.list{display:grid;gap:8px}.row{display:flex;align-items:center;gap:12px;padding:14px;border:1px solid #e7eaf0;border-radius:16px;background:#fff}.dot{width:12px;height:12px;border-radius:50%;background:#3f7d67}.copy{display:flex;flex-direction:column;gap:3px;flex:1}.copy b{font-size:14px}.copy span{font-size:12px;color:#828b99}.row strong{font-size:14px}.add{display:flex;gap:8px;margin-top:14px}.add input{min-width:0;flex:1;border:1px solid #e0e4ec;border-radius:12px;padding:11px;font:inherit}.add button{border:0;border-radius:12px;padding:11px 15px;background:#1f2937;color:#fff;font-weight:800}.light{margin-top:2px}footer{display:flex;justify-content:space-between;color:#8a92a0;font-size:12px;padding:18px 2px 0}@media(max-width:760px){.hero,.grid{grid-template-columns:1fr}.hero{padding-top:38px}}@media(max-width:520px){.add{flex-wrap:wrap}.add input{flex-basis:42%}.add button{flex:1}footer{flex-direction:column;gap:8px}}`}</style>
+  </div></main>;
 }
