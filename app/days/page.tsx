@@ -5,6 +5,7 @@ const days = [
   { day: "Day 2", title: "StudySprint", category: "Education", description: "A focused revision dashboard for planning study sessions and tracking progress.", href: "/days/day-2" },
   { day: "Day 3", title: "RegexLab", category: "Developer Tool", description: "A practical regex workbench for testing patterns, matches, and replacements.", href: "/days/day-3" },
   { day: "Day 4", title: "TimeBox", category: "Productivity", description: "A focused 25-minute timer for turning one small task into a finished result.", href: "/days/day-4" },
+  { day: "Day 5", title: "PantryPilot", category: "Utility", description: "A lightweight household inventory tool for tracking stock, use-soon items, and restocking needs.", href: "/days/day-5" },
 ];
 
 const styles = `
