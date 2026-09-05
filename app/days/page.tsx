@@ -4,6 +4,7 @@ const days = [
   { day: "Day 1", title: "FieldNote", category: "Agriculture", description: "A crop watchlist and field-readiness companion for quick daily decisions.", href: "/days/day-1" },
   { day: "Day 2", title: "StudySprint", category: "Education", description: "A focused revision dashboard for planning study sessions and tracking progress.", href: "/days/day-2" },
   { day: "Day 3", title: "RegexLab", category: "Developer Tool", description: "A practical regex workbench for testing patterns, matches, and replacements.", href: "/days/day-3" },
+  { day: "Day 4", title: "TimeBox", category: "Productivity", description: "A focused 25-minute timer for turning one small task into a finished result.", href: "/days/day-4" },
 ];
 
 export default function DaysPage() {
