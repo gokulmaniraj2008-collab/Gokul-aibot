@@ -14,13 +14,18 @@ const dayOne = {
 export default function DaysPage() {
   const [reported, setReported] = useState(false);
   const [testMessage, setTestMessage] = useState(false);
+  const [dark, setDark] = useState(false);
 
-  return <main className="page daily-builds" style={{ minHeight: "100vh" }}>
-    <nav className="nav"><a className="logo" href="/"><span className="logo-mark">G</span>GOKUL<span className="logo-dot">.AI</span></a><div className="navlinks"><a className="button secondary" href="/" aria-label="Go back to portfolio">← Back</a><a href="/">Portfolio</a><a href="#day01">Day 01</a><a href="#day02">Day 02</a></div><span className="eyebrow">DAILY BUILDS</span></nav>
+  return <main className={`page daily-builds ${dark ? "theme-dark" : "theme-light"}`} style={{ minHeight: "100vh" }}>
+    <nav className="nav">
+      <a className="logo" href="/"><span className="logo-mark">G</span>GOKUL<span className="logo-dot">.AI</span></a>
+      <div className="navlinks"><a className="button secondary" href="/" aria-label="Go back to portfolio">← Back</a><a href="/">Portfolio</a><a href="#day01">Day 01</a><a href="#day02">Day 02</a></div>
+      <div className="days-nav-actions"><span className="eyebrow">DAILY BUILDS</span><button className="theme-toggle" onClick={() => setDark((value) => !value)} aria-label={`Switch to ${dark ? "light" : "dark"} theme`} aria-pressed={dark}>{dark ? "☀️ Light" : "🌙 Dark"}</button></div>
+    </nav>
     <section className="section" style={{ paddingTop: 100 }}>
       <div className="eyebrow">DAILY BUILDS · WEBSITE + ANDROID</div>
       <h1 style={{ fontFamily: "'Plus Jakarta Sans'", fontSize: "clamp(48px,8vw,92px)", lineHeight: .95, letterSpacing: "-.07em", margin: "18px 0" }}>Build every day.<br/><em style={{ color: "#c084fc", fontStyle: "normal" }}>Ship twice.</em></h1>
-      <p style={{ color: "#91899b", maxWidth: 650, lineHeight: 1.8 }}>Every day is a new original product experiment: one useful website, one matching Android app, one GitHub release, and one direct download from this site.</p>
+      <p className="days-muted" style={{ maxWidth: 650, lineHeight: 1.8 }}>Every day is a new original product experiment: one useful website, one matching Android app, one GitHub release, and one direct download from this site.</p>
     </section>
     <section className="section" id="day01" style={{ paddingTop: 20 }}>
       <article className="feature large" style={{ minHeight: "auto", padding: 32 }}>
@@ -50,7 +55,7 @@ export default function DaysPage() {
         <div style={{ display: "flex", justifyContent: "space-between", gap: 20, flexWrap: "wrap" }}><span className="eyebrow">DAY 02 · TEST PRODUCT</span><span style={{ color: "#2563eb", font: "10px 'Space Mono'" }}>● TEST BUILD</span></div>
         <h2 style={{ marginBottom: 8 }}>StudySprint</h2>
         <p style={{ color: "#2563eb", fontWeight: 700 }}>Student Productivity · v0.1 TEST</p>
-        <p style={{ color: "#91899b", maxWidth: 720, lineHeight: 1.8 }}>A lightweight study planner for testing the Daily Innovation workflow. It gives students one place to see today's work, start a focus block and track progress.</p>
+        <p className="days-muted" style={{ maxWidth: 720, lineHeight: 1.8 }}>A lightweight study planner for testing the Daily Innovation workflow. It gives students one place to see today's work, start a focus block and track progress.</p>
         <div className="feature-grid" style={{ marginTop: 30 }}>
           <div className="feature"><span>THE PROBLEM</span><p>Study tasks and assignments are often scattered across notes, chats and different apps.</p></div>
           <div className="feature"><span>THE TEST</span><p>Test navigation, responsive cards, buttons and a small interactive state without creating a production app.</p></div>
