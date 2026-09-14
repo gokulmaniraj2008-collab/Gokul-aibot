@@ -13,7 +13,7 @@ const dayOne = {
 
 export default function DaysPage() {
   const [reported, setReported] = useState(false);
-  return <main className="page" style={{ minHeight: "100vh" }}>
+  return <main className="page daily-builds" style={{ minHeight: "100vh" }}>
     <nav className="nav"><a className="logo" href="/"><span className="logo-mark">G</span>GOKUL<span className="logo-dot">.AI</span></a><div className="navlinks"><a href="/">Portfolio</a><a href="#day01">Day 01</a></div><span className="eyebrow">DAILY BUILDS</span></nav>
     <section className="section" style={{ paddingTop: 100 }}>
       <div className="eyebrow">DAILY BUILDS · WEBSITE + ANDROID</div>
@@ -22,9 +22,9 @@ export default function DaysPage() {
     </section>
     <section className="section" id="day01" style={{ paddingTop: 20 }}>
       <article className="feature large" style={{ minHeight: "auto", padding: 32 }}>
-        <div style={{ display: "flex", justifyContent: "space-between", gap: 20, flexWrap: "wrap" }}><span className="eyebrow">DAY 01 · ORIGINAL STARTUP EXPERIMENT</span><span style={{ color: "#9acb63", font: "10px 'Space Mono'" }}>● BUILDING</span></div>
+        <div style={{ display: "flex", justifyContent: "space-between", gap: 20, flexWrap: "wrap" }}><span className="eyebrow">DAY 01 · ORIGINAL STARTUP EXPERIMENT</span><span style={{ color: "#65a30d", font: "10px 'Space Mono'" }}>● BUILDING</span></div>
         <h2 style={{ marginBottom: 8 }}>{dayOne.name}</h2>
-        <p style={{ color: "#c084fc", fontWeight: 700 }}>{dayOne.category} · Android {dayOne.version}</p>
+        <p style={{ color: "#6d28d9", fontWeight: 700 }}>{dayOne.category} · Android {dayOne.version}</p>
         <div className="feature-grid" style={{ marginTop: 30 }}>
           <div className="feature"><span>THE PROBLEM</span><p>{dayOne.problem}</p></div>
           <div className="feature"><span>THE INNOVATION</span><p>{dayOne.idea}</p></div>
@@ -34,7 +34,7 @@ export default function DaysPage() {
           <a className="button primary" href="/download/queuelens">Download QueueLens APK ↓</a>
           <a className="button secondary" href="#product">View product</a>
         </div>
-        {reported && <p style={{ color: "#9acb63", marginTop: 16, fontSize: 12 }}>Demo report added: 18 people · estimated wait 22 min.</p>}
+        {reported && <p style={{ color: "#65a30d", marginTop: 16, fontSize: 12 }}>Demo report added: 18 people · estimated wait 22 min.</p>}
       </article>
     </section>
     <section className="section" id="product" style={{ paddingTop: 20 }}>
