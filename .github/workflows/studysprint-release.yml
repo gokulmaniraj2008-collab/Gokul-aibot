@@ -1,0 +1,71 @@
+name: StudySprint Android Release
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'studysprint/**'
+      - '.github/workflows/studysprint-release.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  build-release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          flutter-version: '3.35.2'
+          cache: true
+
+      - name: Create Android project
+        shell: bash
+        run: |
+          flutter create --org com.gokul --project-name studysprint build/studysprint_flutter
+          cp studysprint/pubspec.yaml build/studysprint_flutter/pubspec.yaml
+          cp studysprint/lib/main.dart build/studysprint_flutter/lib/main.dart
+          python3 - <<'PY'
+          from pathlib import Path
+          p=Path('build/studysprint_flutter/android/app/src/main/AndroidManifest.xml')
+          s=p.read_text()
+          s=s.replace('android:label="studysprint"','android:label="StudySprint"')
+          p.write_text(s)
+          p=Path('build/studysprint_flutter/android/app/src/main/res/values/styles.xml')
+          if p.exists(): p.write_text(p.read_text())
+          PY
+
+      - name: Build
+        working-directory: build/studysprint_flutter
+        run: |
+          flutter pub get
+          flutter analyze lib/main.dart
+          flutter build apk --release --no-shrink
+
+      - name: Validate APK
+        run: |
+          test -s build/studysprint_flutter/build/app/outputs/flutter-apk/app-release.apk
+          unzip -t build/studysprint_flutter/build/app/outputs/flutter-apk/app-release.apk >/dev/null
+          mkdir -p release
+          cp build/studysprint_flutter/build/app/outputs/flutter-apk/app-release.apk release/StudySprint-v1.0.0.apk
+          sha256sum release/StudySprint-v1.0.0.apk
+
+      - name: Publish GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release delete studysprint-v1.0.0 --yes || true
+          gh release create studysprint-v1.0.0 release/StudySprint-v1.0.0.apk \
+            --title 'StudySprint v1.0.0' \
+            --notes 'Day 02 Daily App: offline study task planner and 25-minute focus timer.'
