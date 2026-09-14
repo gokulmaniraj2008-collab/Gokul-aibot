@@ -1,5 +1,6 @@
 package ai.gokul.studysprint
 
+import android.app.Activity
 import android.graphics.Color
 import android.os.Bundle
 import android.view.Gravity
@@ -8,8 +9,6 @@ import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.ProgressBar
 import android.widget.TextView
-import androidx.core.view.setPadding
-import android.app.Activity
 
 class MainActivity : Activity() {
     private val blue = Color.rgb(37, 99, 235)
@@ -24,7 +23,7 @@ class MainActivity : Activity() {
 
         val root = LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
-            setPadding(24)
+            setPadding(24, 24, 24, 24)
             setBackgroundColor(Color.WHITE)
         }
 
@@ -97,7 +96,7 @@ class MainActivity : Activity() {
     private fun addCard(root: LinearLayout, label: String, value: String) {
         val card = LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
-            setPadding(18)
+            setPadding(18, 18, 18, 18)
             setBackgroundColor(Color.rgb(248, 250, 252))
         }
         val labelView = TextView(this).apply {
