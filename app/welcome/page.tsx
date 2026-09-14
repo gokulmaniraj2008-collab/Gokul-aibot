@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import "./welcome.css";
 
 export default function WelcomePage() {
   return (
