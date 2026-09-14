@@ -10,3 +10,23 @@
 .main-home.theme-light .contact-section,.main-home.theme-light .footer{border-color:var(--main-border)}.main-home.theme-light .footer{color:#667085}.main-home.theme-light .button.secondary{background:#fff;color:#17121f;border-color:var(--main-border)}
 .main-home.theme-dark .nav{background:#0d0913cc}.main-home.theme-dark .navlinks a{color:#a49bad}.main-home.theme-dark .navlinks a:hover{color:#c084fc}.main-home.theme-dark .theme-toggle-main{background:#120d1b;color:#f7f4ff}
 @media(max-width:800px){.main-home .main-nav-actions{gap:6px}.main-home .theme-toggle-main{padding:8px 10px;font-size:10px}.main-home .nav-cta{display:none}}
+
+/* Force the main portfolio to remain dark across every shared/base selector. */
+.main-home.theme-dark,.main-home.theme-dark.page{background:#06040b!important;color:#f7f4ff!important}
+.main-home.theme-dark .nav{background:rgba(13,9,19,.92)!important;border-color:#ffffff14!important;box-shadow:0 12px 50px #0008!important}
+.main-home.theme-dark .navlinks a,.main-home.theme-dark .hero-lead,.main-home.theme-dark .section-intro,.main-home.theme-dark .feature p,.main-home.theme-dark .project-toolbar p,.main-home.theme-dark .assistant-copy p,.main-home.theme-dark .contact-row p{color:#aaa2b8!important}
+.main-home.theme-dark .ticker{color:#777!important;border-color:#ffffff14!important}
+.main-home.theme-dark .feature{background:linear-gradient(145deg,#17101f,#0b0810)!important;border-color:#ffffff14!important}
+.main-home.theme-dark .feature.large{background:linear-gradient(145deg,#1d1230,#0b0810)!important}
+.main-home.theme-dark .tags span{background:#100b16!important;color:#aaa!important;border-color:#ffffff14!important}
+.main-home.theme-dark .project-search{background:#100b16!important;color:#fff!important;border-color:#ffffff14!important}
+.main-home.theme-dark .project-card{background:#100b16e8!important;border-color:#ffffff14!important}
+.main-home.theme-dark .project-card:hover{background:#160f20!important}
+.main-home.theme-dark .chat-card{background:linear-gradient(150deg,#181021,#09070d)!important;border-color:#ffffff14!important}
+.main-home.theme-dark .prompt-row button{background:#0d0911!important;color:#888!important;border-color:#ffffff14!important}
+.main-home.theme-dark .chatbox{background:#07060a!important;border-color:#ffffff14!important}
+.main-home.theme-dark .button.secondary{background:#120d18!important;color:#eee!important;border-color:#ffffff14!important}
+.main-home.theme-dark .contact-section,.main-home.theme-dark .footer{border-color:#ffffff14!important;color:#555!important}
+.main-home.theme-dark .mobile-nav{background:rgba(13,9,19,.96)!important;border:1px solid #ffffff14!important;box-shadow:0 -10px 35px #0008!important;color:#aaa2b8!important}
+.main-home.theme-dark .mobile-nav a{color:#aaa2b8!important}
+.main-home.theme-dark .mobile-nav a:hover{color:#c084fc!important}
