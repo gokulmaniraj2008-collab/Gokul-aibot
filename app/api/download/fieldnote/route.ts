@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 
 const APK_URL =
-  "https://github.com/gokulmaniraj2008-collab/Gokul-aibot/releases/download/fieldnote-v1.0.0/FieldNote-v1.0.0.apk";
+  "https://github.com/gokulmaniraj2008-collab/Gokul-aibot/releases/download/fieldnote-v1.0.1/FieldNote-v1.0.1.apk";
 
 export async function GET() {
   const response = await fetch(APK_URL, {
@@ -20,7 +20,7 @@ export async function GET() {
     status: 200,
     headers: {
       "Content-Type": "application/vnd.android.package-archive",
-      "Content-Disposition": 'attachment; filename="FieldNote-v1.0.0.apk"',
+      "Content-Disposition": 'attachment; filename="FieldNote-v1.0.1.apk"',
       "Cache-Control": "no-store",
     },
   });
