@@ -14,13 +14,12 @@ const dayOne = {
 export default function DaysPage() {
   const [reported, setReported] = useState(false);
   const [testMessage, setTestMessage] = useState(false);
-  const [dark, setDark] = useState(false);
 
-  return <main className={`page daily-builds ${dark ? "theme-dark" : "theme-light"}`} style={{ minHeight: "100vh" }}>
+  return <main className="page daily-builds theme-light" style={{ minHeight: "100vh" }}>
     <nav className="nav">
       <a className="logo" href="/"><span className="logo-mark">G</span>GOKUL<span className="logo-dot">.AI</span></a>
       <div className="navlinks"><a className="button secondary" href="/" aria-label="Go back to portfolio">← Back</a><a href="/">Portfolio</a><a href="#day01">Day 01</a><a href="#day02">Day 02</a></div>
-      <div className="days-nav-actions"><span className="eyebrow">DAILY BUILDS</span><button className="theme-toggle" onClick={() => setDark((value) => !value)} aria-label={`Switch to ${dark ? "light" : "dark"} theme`} aria-pressed={dark}>{dark ? "☀️ Light" : "🌙 Dark"}</button></div>
+      <div className="days-nav-actions"><span className="eyebrow">DAILY BUILDS</span></div>
     </nav>
     <section className="section" style={{ paddingTop: 100 }}>
       <div className="eyebrow">DAILY BUILDS · WEBSITE + ANDROID</div>
