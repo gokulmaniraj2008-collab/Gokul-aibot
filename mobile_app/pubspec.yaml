@@ -1,0 +1,15 @@
+name: gokul_ai_mobile
+description: Gokul AI mobile companion that opens the production portfolio.
+publish_to: "none"
+version: 1.0.0+1
+
+environment:
+  sdk: ">=3.5.0 <4.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  webview_flutter: ^4.10.0
+
+flutter:
+  uses-material-design: true
