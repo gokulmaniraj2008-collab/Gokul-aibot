@@ -32,31 +32,39 @@ jobs:
         with:
           gradle-version: '8.13'
 
-      - name: Build release APK
-        run: gradle :app:assembleRelease --no-daemon
+      # A debug APK is intentionally used for this direct-install release.
+      # Android signs debug builds automatically, so the downloaded APK is
+      # installable without requiring a private signing key in the repository.
+      - name: Build signed debug APK
+        run: gradle :app:assembleDebug --no-daemon
 
       - name: Locate and prepare APK
         shell: bash
         run: |
           set -euo pipefail
-          APK_PATH="$(find app/build/outputs -type f -name '*.apk' -print -quit)"
+          APK_PATH="$(find app/build/outputs/apk -type f -name '*.apk' -print -quit)"
           if [[ -z "${APK_PATH}" ]]; then
-            echo "No APK was produced under app/build/outputs"
-            find app/build/outputs -maxdepth 5 -type f -print || true
+            echo "No APK was produced under app/build/outputs/apk"
+            find app/build/outputs -maxdepth 6 -type f -print || true
             exit 1
           fi
           echo "Using APK: ${APK_PATH}"
-          cp "${APK_PATH}" studysprint-v0.1.0.apk
-          ls -lh studysprint-v0.1.0.apk
+          cp "${APK_PATH}" studysprint-v0.1.1.apk
+          ls -lh studysprint-v0.1.1.apk
+
+      - name: Verify APK is a valid ZIP/APK container
+        run: unzip -t studysprint-v0.1.1.apk >/dev/null
 
       - name: Publish GitHub release
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: studysprint-v0.1.0
-          name: StudySprint v0.1.0
+          tag_name: studysprint-v0.1.1
+          name: StudySprint v0.1.1
           body: |
-            StudySprint Day 02 test Android build.
+            StudySprint Day 02 direct-install build.
 
-            Lightweight study planner test app with a 25-minute focus sprint interaction.
-          files: daily_apps/studysprint/studysprint-v0.1.0.apk
+            This release uses the Android-signed debug variant so it can be
+            installed directly from the Daily Innovation website without a
+            private release keystore.
+          files: daily_apps/studysprint/studysprint-v0.1.1.apk
           make_latest: false
