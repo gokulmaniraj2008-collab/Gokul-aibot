@@ -13,7 +13,8 @@ const skills = ["Next.js", "React", "TypeScript", "JavaScript", "Node.js", "Supa
 const prompts = ["Who is Gokul?", "What is Gokul building?", "Show me the AgriBot project", "What are Gokul’s strongest skills?"];
 
 export default function Home() {
-  const [dark, setDark] = useState(false);
+  // Dark theme is the default for the main home page. The toggle can still switch back to light mode.
+  const [dark, setDark] = useState(true);
   const [message, setMessage] = useState("");
   const [reply, setReply] = useState("Hi! I’m Gokul AI. Ask me about Gokul, his work, projects, skills or vision.");
   const [loading, setLoading] = useState(false);
