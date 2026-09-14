@@ -1,12 +1,11 @@
 name: FieldNote Android Release
 
 on:
+  workflow_dispatch:
   push:
-    branches: [main]
     paths:
       - 'fieldnote/**'
       - '.github/workflows/fieldnote-release.yml'
-  workflow_dispatch:
 
 permissions:
   contents: write
@@ -14,18 +13,22 @@ permissions:
 jobs:
   build-release:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: fieldnote
+    timeout-minutes: 30
     steps:
-      - name: Checkout
+      - name: Checkout main
         uses: actions/checkout@v4
 
       - name: Set up Java 17
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v5
         with:
           distribution: temurin
           java-version: '17'
+
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Install Android SDK packages
+        run: sdkmanager "platform-tools" "platforms;android-35" "build-tools;35.0.0"
 
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
@@ -33,25 +36,42 @@ jobs:
           channel: stable
           cache: true
 
-      - name: Generate Android project files
-        run: flutter create --platforms=android .
+      - name: Create Android project from FieldNote source
+        run: |
+          rm -rf build/fieldnote_flutter
+          flutter create --platforms=android --org com.gokulai --project-name fieldnote build/fieldnote_flutter
+          cp fieldnote/pubspec.yaml build/fieldnote_flutter/pubspec.yaml
+          cp -R fieldnote/lib build/fieldnote_flutter/lib
+          cd build/fieldnote_flutter
+          flutter pub get
 
-      - name: Install dependencies
-        run: flutter pub get
-
-      - name: Analyze and test
-        run: flutter analyze
+      - name: Analyze FieldNote source
+        working-directory: build/fieldnote_flutter
+        run: flutter analyze lib/main.dart
 
       - name: Build release APK
-        run: flutter build apk --release
+        working-directory: build/fieldnote_flutter
+        run: flutter build apk --release --no-shrink
 
-      - name: Create GitHub release and upload APK
-        working-directory: .
+      - name: Validate APK
+        run: |
+          APK="build/fieldnote_flutter/build/app/outputs/flutter-apk/app-release.apk"
+          test -s "$APK"
+          unzip -t "$APK" >/dev/null
+          "$ANDROID_HOME/build-tools/35.0.0/apksigner" verify --verbose "$APK"
+          mkdir -p release
+          cp "$APK" release/FieldNote-v1.0.0.apk
+
+      - name: Upload APK artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: FieldNote-Android-${{ github.run_number }}
+          path: release/FieldNote-v1.0.0.apk
+          if-no-files-found: error
+
+      - name: Publish GitHub Release
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           gh release delete fieldnote-v1.0.0 --yes --cleanup-tag 2>/dev/null || true
-          gh release create fieldnote-v1.0.0 \
-            fieldnote/build/app/outputs/flutter-apk/app-release.apk#FieldNote-v1.0.0.apk \
-            --title 'FieldNote v1.0.0' \
-            --notes 'FieldNote v1.0.0 — first released Android build. Offline field observations, crop/field tagging, search, and local persistence.'
+          gh release create fieldnote-v1.0.0 release/FieldNote-v1.0.0.apk#FieldNote-v1.0.0.apk --repo "$GITHUB_REPOSITORY" --title "FieldNote v1.0.0" --generate-notes
