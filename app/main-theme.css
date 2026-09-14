@@ -48,10 +48,15 @@
 .main-home.theme-dark .mono-label,.main-home.theme-dark .project-top{color:#8f8798!important}
 .main-home.theme-dark .footer{color:#777!important}
 
-/* Personal AI: dark-only, high-contrast, mobile-safe chat UI. */
-.main-home.theme-dark .assistant-section{scroll-margin-bottom:96px;padding-bottom:120px!important}
-.main-home.theme-dark .assistant-section .assistant-shell{align-items:stretch}
-.main-home.theme-dark .assistant-section .chat-card{color:#f7f4ff!important;overflow:hidden}
+/* Personal AI: fully black section + high-contrast, mobile-safe chat UI. */
+.main-home.theme-dark .assistant-section{scroll-margin-bottom:96px;padding-top:120px!important;padding-bottom:120px!important;background:#000000!important;color:#f7f4ff!important;position:relative}
+.main-home.theme-dark .assistant-section::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 18% 30%,#1a0b2b 0,transparent 36%),radial-gradient(circle at 85% 65%,#10051b 0,transparent 34%);pointer-events:none}
+.main-home.theme-dark .assistant-section .assistant-shell{position:relative;z-index:1;align-items:stretch}
+.main-home.theme-dark .assistant-section .assistant-copy{color:#f7f4ff!important}
+.main-home.theme-dark .assistant-section .assistant-copy .eyebrow{color:#c084fc!important}
+.main-home.theme-dark .assistant-section .assistant-copy p{color:#b8afc2!important}
+.main-home.theme-dark .assistant-section .ai-badge{color:#b8afc2!important;border-color:#a855f755!important;background:#0b0710!important}
+.main-home.theme-dark .assistant-section .chat-card{color:#f7f4ff!important;overflow:hidden;background:linear-gradient(150deg,#181021,#050505)!important;border-color:#ffffff18!important;box-shadow:0 30px 90px #000c!important}
 .main-home.theme-dark .assistant-section .chat-head{border-color:#ffffff18!important}
 .main-home.theme-dark .assistant-section .chat-head b{color:#ffffff!important}
 .main-home.theme-dark .assistant-section .chat-head small{color:#a9a0b4!important}
@@ -62,13 +67,13 @@
 .main-home.theme-dark .assistant-section .prompt-row button{background:#15101d!important;color:#ddd5e8!important;border-color:#ffffff1f!important;box-shadow:0 4px 14px #0004!important}
 .main-home.theme-dark .assistant-section .prompt-row button:hover:not(:disabled){background:#21152d!important;color:#ffffff!important;border-color:#c084fc66!important}
 .main-home.theme-dark .assistant-section .prompt-row button:disabled{opacity:.55}
-.main-home.theme-dark .assistant-section .chatbox{background:#07060a!important;border-color:#ffffff24!important;box-shadow:inset 0 1px 0 #ffffff08!important}
+.main-home.theme-dark .assistant-section .chatbox{background:#030303!important;border-color:#ffffff24!important;box-shadow:inset 0 1px 0 #ffffff08!important}
 .main-home.theme-dark .assistant-section .chatbox input{color:#ffffff!important;caret-color:#c084fc!important}
 .main-home.theme-dark .assistant-section .chatbox input::placeholder{color:#aaa2b8!important;opacity:1!important}
 .main-home.theme-dark .assistant-section .chatbox button{background:linear-gradient(135deg,#a855f7,#c084fc)!important;color:#ffffff!important;box-shadow:0 8px 24px #a855f744!important}
 .main-home.theme-dark .assistant-section .chat-foot{color:#8f8798!important}
 @media(max-width:800px){
-  .main-home.theme-dark .assistant-section{padding-bottom:132px!important}
+  .main-home.theme-dark .assistant-section{padding-top:96px!important;padding-bottom:132px!important}
   .main-home.theme-dark .assistant-section .assistant-shell{gap:28px!important}
   .main-home.theme-dark .assistant-section .chat-card{width:100%!important;border-radius:28px!important}
   .main-home.theme-dark .assistant-section .chat-message{align-items:flex-start!important}
