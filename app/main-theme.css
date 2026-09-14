@@ -30,3 +30,20 @@
 .main-home.theme-dark .mobile-nav{background:rgba(13,9,19,.96)!important;border:1px solid #ffffff14!important;box-shadow:0 -10px 35px #0008!important;color:#aaa2b8!important}
 .main-home.theme-dark .mobile-nav a{color:#aaa2b8!important}
 .main-home.theme-dark .mobile-nav a:hover{color:#c084fc!important}
+
+/* Dark contrast patch: prevent legacy/shared light rules from making dark-mode content unreadable. */
+.main-home.theme-dark .logo,.main-home.theme-dark .logo-mark,.main-home.theme-dark .logo-dot{color:#f7f4ff!important}
+.main-home.theme-dark .logo-dot{color:#c084fc!important}
+.main-home.theme-dark .logo-mark{border-color:#a855f7!important}
+.main-home.theme-dark .hero h1,.main-home.theme-dark .section h2,.main-home.theme-dark .feature h3,.main-home.theme-dark .project-card h3,.main-home.theme-dark .assistant-copy h2,.main-home.theme-dark .contact-section h2{color:#f7f4ff!important}
+.main-home.theme-dark .hero h1 span,.main-home.theme-dark .section h2 em,.main-home.theme-dark .assistant-copy h2 em,.main-home.theme-dark .contact-section h2 em{background:linear-gradient(90deg,#c084fc,#e879f9)!important;-webkit-background-clip:text!important;background-clip:text!important;color:transparent!important}
+.main-home.theme-dark .core{background:radial-gradient(circle at 35% 28%,#3b2750 0,#171022 48%,#09070e 72%)!important;border-color:#c084fc66!important;box-shadow:0 0 90px #a855f718,inset 0 0 40px #a855f715!important}
+.main-home.theme-dark .core-inner{color:#f7f4ff!important}
+.main-home.theme-dark .core-inner span{color:#c084fc!important}
+.main-home.theme-dark .float-card{background:rgba(19,14,27,.96)!important;color:#f7f4ff!important;border-color:#ffffff18!important;box-shadow:0 15px 40px #0008!important}
+.main-home.theme-dark .float-card b{color:#f7f4ff!important}
+.main-home.theme-dark .float-card small{color:#9d95a8!important}
+.main-home.theme-dark .float-card span{color:#c084fc!important}
+.main-home.theme-dark .hero-meta{color:#8f8798!important}
+.main-home.theme-dark .mono-label,.main-home.theme-dark .project-top{color:#8f8798!important}
+.main-home.theme-dark .footer{color:#777!important}
