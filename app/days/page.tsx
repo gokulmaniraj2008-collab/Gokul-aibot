@@ -57,7 +57,7 @@ export default function DaysPage() {
           <div className="feature"><span>DESIGN</span><p>White base theme, mobile-first layout, clean cards, strong typography and matching Android-ready branding.</p></div>
         </div>
         <div className="actions" style={{ marginTop: 28 }}>
-          <button className="button primary" onClick={() => setTestMessage((value) => !value)}>Run Day 02 test</button>
+          <button className="button primary" onClick={() => setTestMessage((value) => !value)} aria-label="Run the Day 02 StudySprint browser test">Run Day 02 test</button>
           <a className="button secondary" href="#day01">Back to Day 01</a>
         </div>
         {testMessage && <p style={{ color: "#2563eb", marginTop: 16, fontSize: 12 }}>Day 02 interaction test passed in the browser UI.</p>}
