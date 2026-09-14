@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 const initialTasks = [
   { id: 1, title: 'Choose today\'s most important task', done: true },
@@ -11,13 +11,27 @@ const initialTasks = [
 export default function DailyFocus() {
   const [tasks, setTasks] = useState(initialTasks);
   const [newTask, setNewTask] = useState('');
-  const [minutes, setMinutes] = useState(25);
-  const [seconds, setSeconds] = useState(0);
+  const [remaining, setRemaining] = useState(25 * 60);
   const [running, setRunning] = useState(false);
+
+  useEffect(() => {
+    if (!running) return;
+    const timer = window.setInterval(() => {
+      setRemaining((value) => {
+        if (value <= 1) {
+          window.clearInterval(timer);
+          setRunning(false);
+          return 0;
+        }
+        return value - 1;
+      });
+    }, 1000);
+    return () => window.clearInterval(timer);
+  }, [running]);
 
   const completed = useMemo(() => tasks.filter((task) => task.done).length, [tasks]);
   const progress = tasks.length ? Math.round((completed / tasks.length) * 100) : 0;
-  const time = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+  const time = `${String(Math.floor(remaining / 60)).padStart(2, '0')}:${String(remaining % 60).padStart(2, '0')}`;
 
   function toggleTask(id: number) {
     setTasks((current) => current.map((task) => task.id === id ? { ...task, done: !task.done } : task));
@@ -30,29 +44,9 @@ export default function DailyFocus() {
     setNewTask('');
   }
 
-  function startTimer() {
-    if (running) return;
-    setRunning(true);
-    const tick = window.setInterval(() => {
-      setSeconds((value) => {
-        if (value > 0) return value - 1;
-        setMinutes((m) => {
-          if (m <= 1) {
-            window.clearInterval(tick);
-            setRunning(false);
-            return 0;
-          }
-          return m - 1;
-        });
-        return 59;
-      });
-    }, 1000);
-  }
-
   function resetTimer() {
     setRunning(false);
-    setMinutes(25);
-    setSeconds(0);
+    setRemaining(25 * 60);
   }
 
   return (
@@ -95,18 +89,14 @@ export default function DailyFocus() {
         </article>
 
         <article className="panel timer-panel">
-          <div className="panel-head"><div><span className="number">02</span><h2>Focus timer</h2></div><span className="count">{running ? 'RUNNING' : 'READY'}</span></div>
+          <div className="panel-head"><div><span className="number">02</span><h2>Focus timer</h2></div><span className="count">{running ? 'RUNNING' : remaining === 0 ? 'DONE' : 'READY'}</span></div>
           <div className="timer">{time}</div>
           <p>Put the phone down. Work on one thing until the timer ends.</p>
-          <div className="timer-actions"><button onClick={startTimer} disabled={running}>Start focus</button><button className="ghost" onClick={resetTimer}>Reset</button></div>
+          <div className="timer-actions"><button onClick={() => setRunning(true)} disabled={running || remaining === 0}>Start focus</button><button className="ghost" onClick={resetTimer}>Reset</button></div>
         </article>
       </section>
 
-      <section className="quote">
-        <span>03 / DAILY RULE</span>
-        <p>“Small shipped things compound into serious skill.”</p>
-      </section>
-
+      <section className="quote"><span>03 / DAILY RULE</span><p>“Small shipped things compound into serious skill.”</p></section>
       <footer><span>DAY 01 · FOCUSFLOW</span><span>BUILT WITH NEXT.JS + TYPESCRIPT</span></footer>
 
       <style jsx>{`
