@@ -1,0 +1,92 @@
+name: Build and Release QueueLens Android APK
+
+on:
+  push:
+    paths:
+      - 'daily_apps/queuelens/**'
+      - '.github/workflows/queuelens-release.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build-release:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Java 17
+        uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Install Android SDK packages
+        run: sdkmanager "platform-tools" "platforms;android-35" "build-tools;35.0.0"
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+
+      - name: Create Android project
+        run: |
+          rm -rf build/queuelens
+          flutter create --platforms=android --org com.gokulai --project-name queuelens build/queuelens
+          cp daily_apps/queuelens/pubspec.yaml build/queuelens/pubspec.yaml
+          mkdir -p build/queuelens/lib
+          cp daily_apps/queuelens/lib/main.dart build/queuelens/lib/main.dart
+          mkdir -p build/queuelens/android/app/src/main/res/drawable
+          cp daily_apps/queuelens/android/ic_queuelens.xml build/queuelens/android/app/src/main/res/drawable/ic_queuelens.xml
+          python3 - <<'PY'
+          from pathlib import Path
+          p=Path('build/queuelens/android/app/src/main/AndroidManifest.xml')
+          s=p.read_text()
+          s=s.replace('android:label="queuelens"','android:label="QueueLens"')
+          s=s.replace('@mipmap/ic_launcher','@drawable/ic_queuelens')
+          p.write_text(s)
+          PY
+          cd build/queuelens
+          flutter pub get
+
+      - name: Analyze
+        working-directory: build/queuelens
+        run: flutter analyze lib/main.dart
+
+      - name: Build release APK
+        working-directory: build/queuelens
+        run: flutter build apk --release --no-shrink
+
+      - name: Validate APK
+        run: |
+          APK=build/queuelens/build/app/outputs/flutter-apk/app-release.apk
+          test -s "$APK"
+          unzip -t "$APK" >/dev/null
+          "$ANDROID_HOME/build-tools/35.0.0/apksigner" verify --verbose "$APK"
+          mkdir -p release
+          cp "$APK" release/QueueLens-v1.0.0.apk
+
+      - name: Upload APK artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: QueueLens-v1.0.0-${{ github.run_number }}
+          path: release/QueueLens-v1.0.0.apk
+          if-no-files-found: error
+
+      - name: Publish GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          TAG=queuelens-v1.0.0
+          if gh release view "$TAG" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
+            gh release upload "$TAG" release/QueueLens-v1.0.0.apk --clobber --repo "$GITHUB_REPOSITORY"
+          else
+            gh release create "$TAG" release/QueueLens-v1.0.0.apk#QueueLens-v1.0.0.apk --repo "$GITHUB_REPOSITORY" --title "QueueLens v1.0.0" --generate-notes
+          fi
