@@ -1,7 +1,8 @@
 export default function DownloadApp() {
   return (
     <a
-      href="https://github.com/gokulmaniraj2008-collab/Gokul-aibot/releases/latest/download/Gokul-AI.apk"
+      href="/download-apk"
+      download="Gokul-AI.apk"
       aria-label="Download Gokul AI Android app"
       style={{
         position: "fixed",
