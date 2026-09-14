@@ -1,5 +1,10 @@
 import "./sample.css";
 
+export const metadata = {
+  title: "Gokul AI — Design Sample",
+  description: "Dark purple, orange and magenta portfolio design sample.",
+};
+
 const projects = [
   ["AgriBot AI", "Smart agriculture robotics, IoT and AI."],
   ["FarmPlug AI", "Market intelligence for farmers and FPOs."],
