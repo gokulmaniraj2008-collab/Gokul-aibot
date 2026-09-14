@@ -2,6 +2,16 @@ import { NextRequest, NextResponse } from "next/server";
 
 export const runtime = "nodejs";
 
+const SYSTEM_PROMPT = `You are Gokul AI, the personal AI assistant inside Gokul's portfolio.
+
+Known profile:
+- Gokul is a 2nd-year Agricultural Engineering student at RVS TCC in India.
+- He builds practical products across AI, full-stack software, robotics, IoT, smart agriculture and business.
+- Key projects include AgriBot AI, FarmPlug AI, Gokul-aibot and GKFXL.
+- Core technologies include Next.js, React, TypeScript, JavaScript, Node.js, Supabase, PostgreSQL, Python, AI engineering, REST APIs, GitHub, Vercel, ESP32, IoT/robotics and agricultural engineering.
+
+Answer questions about Gokul and his public portfolio accurately and concisely. Do not invent private or unknown facts. If asked something unrelated, answer normally when useful, while keeping a helpful portfolio-assistant personality.`;
+
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
@@ -11,55 +21,58 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Message is required" }, { status: 400 });
     }
 
-    const apiKey = process.env.AI_API_KEY || process.env.OPENAI_API_KEY;
+    const apiKey = process.env.GEMINI_API_KEY;
     if (!apiKey) {
       return NextResponse.json(
         {
-          reply:
-            "AI backend is not configured yet. Add AI_API_KEY (or OPENAI_API_KEY) in Vercel Environment Variables.",
+          reply: "Gemini AI is not configured yet. Add GEMINI_API_KEY to the server environment variables.",
           configured: false,
         },
         { status: 503 },
       );
     }
 
-    const baseUrl = (process.env.AI_BASE_URL || "https://api.openai.com/v1").replace(/\/$/, "");
-    const model = process.env.AI_MODEL || "gpt-4.1-mini";
+    const model = process.env.GEMINI_MODEL || "gemini-2.5-flash";
+    const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent?key=${encodeURIComponent(apiKey)}`;
 
-    const response = await fetch(`${baseUrl}/chat/completions`, {
+    const response = await fetch(endpoint, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${apiKey}`,
-      },
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        model,
-        messages: [
+        systemInstruction: {
+          parts: [{ text: SYSTEM_PROMPT }],
+        },
+        contents: [
           {
-            role: "system",
-            content:
-              "You are Gokul's personal AI assistant. Be concise and helpful. You can discuss Gokul, his projects, skills, goals, AgriBot, web development, and general questions. Do not invent private facts.",
+            role: "user",
+            parts: [{ text: message }],
           },
-          { role: "user", content: message },
         ],
-        temperature: 0.7,
+        generationConfig: {
+          temperature: 0.7,
+          maxOutputTokens: 700,
+        },
       }),
     });
 
     const data = await response.json();
     if (!response.ok) {
       return NextResponse.json(
-        { error: data?.error?.message || "AI provider request failed" },
+        { error: data?.error?.message || "Gemini request failed" },
         { status: response.status >= 400 && response.status < 600 ? response.status : 502 },
       );
     }
 
-    const reply = data?.choices?.[0]?.message?.content;
-    if (typeof reply !== "string" || !reply.trim()) {
-      return NextResponse.json({ error: "AI provider returned no response" }, { status: 502 });
+    const reply = data?.candidates?.[0]?.content?.parts
+      ?.map((part: { text?: string }) => part?.text || "")
+      .join("")
+      .trim();
+
+    if (!reply) {
+      return NextResponse.json({ error: "Gemini returned no response" }, { status: 502 });
     }
 
-    return NextResponse.json({ reply: reply.trim(), model });
+    return NextResponse.json({ reply, model, provider: "Gemini" });
   } catch (error) {
     return NextResponse.json(
       { error: error instanceof Error ? error.message : "Invalid request" },
