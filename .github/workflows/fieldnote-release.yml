@@ -42,6 +42,22 @@ jobs:
           flutter create --platforms=android --org com.gokulai --project-name fieldnote build/fieldnote_flutter
           cp fieldnote/pubspec.yaml build/fieldnote_flutter/pubspec.yaml
           cp -R fieldnote/lib build/fieldnote_flutter/lib
+          mkdir -p build/fieldnote_flutter/android/app/src/main/res/drawable
+          cat > build/fieldnote_flutter/android/app/src/main/res/drawable/ic_fieldnote.xml <<'EOF'
+          <vector xmlns:android="http://schemas.android.com/apk/res/android"
+              android:width="108dp"
+              android:height="108dp"
+              android:viewportWidth="108"
+              android:viewportHeight="108">
+              <path android:fillColor="#315B3C" android:pathData="M8,8 L100,8 L100,100 L8,100 Z" />
+              <path android:fillColor="#FFFFFF" android:pathData="M54,23 C38,31 29,43 31,56 C33,69 43,76 54,80 C65,76 75,69 77,56 C79,43 70,31 54,23 Z" />
+              <path android:fillColor="#6D956F" android:pathData="M54,31 L54,76 L58,76 L58,31 Z" />
+              <path android:fillColor="#315B3C" android:pathData="M35,58 L50,50 L50,55 L35,63 Z M58,48 L73,40 L73,45 L58,53 Z" />
+              <path android:fillColor="#FFFFFF" android:pathData="M25,86 L83,86 L83,91 L25,91 Z" />
+          </vector>
+          EOF
+          sed -i 's/android:label="fieldnote"/android:label="FieldNote"/' build/fieldnote_flutter/android/app/src/main/AndroidManifest.xml
+          sed -i 's/android:icon="@mipmap\/ic_launcher"/android:icon="@drawable\/ic_fieldnote"/' build/fieldnote_flutter/android/app/src/main/AndroidManifest.xml
           cd build/fieldnote_flutter
           flutter pub get
 
@@ -60,18 +76,18 @@ jobs:
           unzip -t "$APK" >/dev/null
           "$ANDROID_HOME/build-tools/35.0.0/apksigner" verify --verbose "$APK"
           mkdir -p release
-          cp "$APK" release/FieldNote-v1.0.0.apk
+          cp "$APK" release/FieldNote-v1.0.1.apk
 
       - name: Upload APK artifact
         uses: actions/upload-artifact@v4
         with:
           name: FieldNote-Android-${{ github.run_number }}
-          path: release/FieldNote-v1.0.0.apk
+          path: release/FieldNote-v1.0.1.apk
           if-no-files-found: error
 
       - name: Publish GitHub Release
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          gh release delete fieldnote-v1.0.0 --yes --cleanup-tag 2>/dev/null || true
-          gh release create fieldnote-v1.0.0 release/FieldNote-v1.0.0.apk#FieldNote-v1.0.0.apk --repo "$GITHUB_REPOSITORY" --title "FieldNote v1.0.0" --generate-notes
+          gh release delete fieldnote-v1.0.1 --yes --cleanup-tag 2>/dev/null || true
+          gh release create fieldnote-v1.0.1 release/FieldNote-v1.0.1.apk#FieldNote-v1.0.1.apk --repo "$GITHUB_REPOSITORY" --title "FieldNote v1.0.1" --generate-notes
