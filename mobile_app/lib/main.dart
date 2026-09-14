@@ -3,22 +3,22 @@ import 'package:webview_flutter/webview_flutter.dart';
 
 const productionUrl = String.fromEnvironment(
   'GOKUL_AI_URL',
-  defaultValue: 'https://gokul-aibot.vercel.app',
+  defaultValue: 'https://gokul-aibot.vercel.app/days/day-01',
 );
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  runApp(const GokulAiApp());
+  runApp(const PocketRelayApp());
 }
 
-class GokulAiApp extends StatefulWidget {
-  const GokulAiApp({super.key});
+class PocketRelayApp extends StatefulWidget {
+  const PocketRelayApp({super.key});
 
   @override
-  State<GokulAiApp> createState() => _GokulAiAppState();
+  State<PocketRelayApp> createState() => _PocketRelayAppState();
 }
 
-class _GokulAiAppState extends State<GokulAiApp> {
+class _PocketRelayAppState extends State<PocketRelayApp> {
   late final WebViewController controller;
   bool loading = true;
 
@@ -37,38 +37,24 @@ class _GokulAiAppState extends State<GokulAiApp> {
       ..loadRequest(Uri.parse(productionUrl));
   }
 
-  Future<bool> handleBack() async {
-    if (await controller.canGoBack()) {
-      await controller.goBack();
-      return false;
-    }
-    return true;
-  }
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Gokul AI',
-      theme: ThemeData.dark(useMaterial3: true),
+      title: 'PocketRelay',
+      theme: ThemeData.light(useMaterial3: true),
       home: PopScope(
         canPop: false,
         onPopInvokedWithResult: (_, __) async {
-          if (await controller.canGoBack()) {
-            await controller.goBack();
-          }
+          if (await controller.canGoBack()) await controller.goBack();
         },
         child: Scaffold(
-          backgroundColor: const Color(0xFF06040B),
+          backgroundColor: const Color(0xFFFFFDF8),
           body: SafeArea(
             child: Stack(
               children: [
                 WebViewWidget(controller: controller),
-                if (loading)
-                  const Align(
-                    alignment: Alignment.topCenter,
-                    child: LinearProgressIndicator(minHeight: 2),
-                  ),
+                if (loading) const Align(alignment: Alignment.topCenter, child: LinearProgressIndicator(minHeight: 2)),
               ],
             ),
           ),
