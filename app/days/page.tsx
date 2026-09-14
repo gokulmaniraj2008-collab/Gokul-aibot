@@ -14,7 +14,7 @@ const dayOne = {
 export default function DaysPage() {
   const [reported, setReported] = useState(false);
   return <main className="page daily-builds" style={{ minHeight: "100vh" }}>
-    <nav className="nav"><a className="logo" href="/"><span className="logo-mark">G</span>GOKUL<span className="logo-dot">.AI</span></a><div className="navlinks"><a href="/">Portfolio</a><a href="#day01">Day 01</a></div><span className="eyebrow">DAILY BUILDS</span></nav>
+    <nav className="nav"><a className="logo" href="/"><span className="logo-mark">G</span>GOKUL<span className="logo-dot">.AI</span></a><div className="navlinks"><a className="button secondary" href="/" aria-label="Go back to portfolio">← Back</a><a href="/">Portfolio</a><a href="#day01">Day 01</a></div><span className="eyebrow">DAILY BUILDS</span></nav>
     <section className="section" style={{ paddingTop: 100 }}>
       <div className="eyebrow">DAILY BUILDS · WEBSITE + ANDROID</div>
       <h1 style={{ fontFamily: "'Plus Jakarta Sans'", fontSize: "clamp(48px,8vw,92px)", lineHeight: .95, letterSpacing: "-.07em", margin: "18px 0" }}>Build every day.<br/><em style={{ color: "#c084fc", fontStyle: "normal" }}>Ship twice.</em></h1>
