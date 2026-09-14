@@ -76,18 +76,18 @@ jobs:
           unzip -t "$APK" >/dev/null
           "$ANDROID_HOME/build-tools/35.0.0/apksigner" verify --verbose "$APK"
           mkdir -p release
-          cp "$APK" release/FieldNote-v1.0.1.apk
+          cp "$APK" release/FieldNote-v1.0.2.apk
 
       - name: Upload APK artifact
         uses: actions/upload-artifact@v4
         with:
           name: FieldNote-Android-${{ github.run_number }}
-          path: release/FieldNote-v1.0.1.apk
+          path: release/FieldNote-v1.0.2.apk
           if-no-files-found: error
 
       - name: Publish GitHub Release
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          gh release delete fieldnote-v1.0.1 --yes --cleanup-tag 2>/dev/null || true
-          gh release create fieldnote-v1.0.1 release/FieldNote-v1.0.1.apk#FieldNote-v1.0.1.apk --repo "$GITHUB_REPOSITORY" --title "FieldNote v1.0.1" --generate-notes
+          gh release delete fieldnote-v1.0.2 --yes --cleanup-tag 2>/dev/null || true
+          gh release create fieldnote-v1.0.2 release/FieldNote-v1.0.2.apk#FieldNote-v1.0.2.apk --repo "$GITHUB_REPOSITORY" --title "FieldNote v1.0.2" --generate-notes
