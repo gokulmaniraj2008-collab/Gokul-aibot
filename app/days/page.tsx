@@ -21,7 +21,8 @@ export default function DaysPage() {
       <div className="navlinks"><a className="button secondary" href="/" aria-label="Go back to portfolio">← Back</a><a href="/">Portfolio</a><a href="#day01">Day 01</a><a href="#day02">Day 02</a></div>
       <div className="days-nav-actions"><span className="eyebrow">DAILY BUILDS</span></div>
     </nav>
-    <section className="section" style={{ paddingTop: 100 }}>
+    <section className="section" style={{ paddingTop: 28 }}>
+      <a className="button secondary" href="/" aria-label="Go back to portfolio" style={{ display: "inline-flex", marginBottom: 42, textDecoration: "none" }}>← Back</a>
       <div className="eyebrow">DAILY BUILDS · WEBSITE + ANDROID</div>
       <h1 style={{ fontFamily: "'Plus Jakarta Sans'", fontSize: "clamp(48px,8vw,92px)", lineHeight: .95, letterSpacing: "-.07em", margin: "18px 0" }}>Build every day.<br/><em style={{ color: "#c084fc", fontStyle: "normal" }}>Ship twice.</em></h1>
       <p className="days-muted" style={{ maxWidth: 650, lineHeight: 1.8 }}>Every day is a new original product experiment: one useful website, one matching Android app, one GitHub release, and one direct download from this site.</p>
