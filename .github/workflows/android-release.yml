@@ -1,0 +1,93 @@
+name: Build and Release Gokul AI Android APK
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'app/**'
+      - 'components/**'
+      - 'lib/**'
+      - 'mobile_app/**'
+      - '.github/workflows/android-release.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  build-release:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@v4
+
+      - name: Set up Java 17
+        uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Install Android SDK packages
+        run: sdkmanager "platform-tools" "platforms;android-35" "build-tools;35.0.0"
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+
+      - name: Create Android project from canonical mobile source
+        run: |
+          rm -rf build/gokul_ai_flutter
+          flutter create --platforms=android --org com.gokulai --project-name gokul_ai build/gokul_ai_flutter
+          cp mobile_app/pubspec.yaml build/gokul_ai_flutter/pubspec.yaml
+          cp mobile_app/lib/main.dart build/gokul_ai_flutter/lib/main.dart
+          cd build/gokul_ai_flutter
+          flutter pub get
+
+      - name: Configure release Android internet access
+        working-directory: build/gokul_ai_flutter
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          p = Path('android/app/src/main/AndroidManifest.xml')
+          s = p.read_text()
+          permission = '<uses-permission android:name="android.permission.INTERNET" />'
+          if permission not in s:
+              s = s.replace('<manifest xmlns:android="http://schemas.android.com/apk/res/android">', '<manifest xmlns:android="http://schemas.android.com/apk/res/android">\n    ' + permission)
+          p.write_text(s)
+          PY
+
+      - name: Analyze mobile source
+        working-directory: build/gokul_ai_flutter
+        run: flutter analyze lib/main.dart
+
+      - name: Build release APK
+        working-directory: build/gokul_ai_flutter
+        run: flutter build apk --release --no-shrink --dart-define=GOKUL_AI_URL=https://gokul-aibot.vercel.app
+
+      - name: Validate APK
+        run: |
+          APK="build/gokul_ai_flutter/build/app/outputs/flutter-apk/app-release.apk"
+          test -s "$APK"
+          unzip -t "$APK" >/dev/null
+          "$ANDROID_HOME/build-tools/35.0.0/apksigner" verify --verbose "$APK"
+          mkdir -p release
+          cp "$APK" release/Gokul-AI.apk
+
+      - name: Upload APK artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: Gokul-AI-Android-${{ github.run_number }}
+          path: release/Gokul-AI.apk
+          if-no-files-found: error
+
+      - name: Publish GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          TAG="android-${GITHUB_RUN_NUMBER}"
+          gh release create "$TAG" release/Gokul-AI.apk#Gokul-AI.apk --repo "$GITHUB_REPOSITORY" --title "Gokul AI Android $TAG" --generate-notes
