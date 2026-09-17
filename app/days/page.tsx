@@ -2,6 +2,7 @@ const days = [
   ["Day 01", "PocketRelay", "Offline-first local exchange", "/days/day-01"],
   ["Day 12", "DecisionDeck", "Decision scoring utility", "/days/day-12"],
   ["Day 13", "PromptPocket", "AI prompt workbench", "/days/day-13"],
+  ["Day 14", "RouteReady", "Travel readiness planner", "/days/day-14"],
 ];
 
 export default function DaysPage() {
@@ -25,14 +26,14 @@ export default function DaysPage() {
             <article className="feature large" style={{ minHeight: index === days.length - 1 ? 360 : 240, padding: 32, borderRadius: 28 }}>
               <div className="eyebrow">{day} · {category.toUpperCase()}</div>
               <h2 style={{ margin: "18px 0 12px", fontSize: "clamp(34px,6vw,64px)", letterSpacing: "-.05em" }}>{title}</h2>
-              <p className="days-muted" style={{ maxWidth: 680, lineHeight: 1.8, margin: 0 }}>{index === days.length - 1 ? "A lightweight prompt workbench for tightening instructions before you paste them into an AI workflow." : index === 1 ? "A practical decision scorer using impact, effort, and confidence." : "Small help, right moment. A trusted relay board for tiny errands that are too small for a full service, but too important to forget."}</p>
+              <p className="days-muted" style={{ maxWidth: 680, lineHeight: 1.8, margin: 0 }}>{title === "RouteReady" ? "A travel readiness planner that turns a vague trip into a calm, checkable launch plan." : title === "PromptPocket" ? "A lightweight prompt workbench for tightening instructions before you paste them into an AI workflow." : title === "DecisionDeck" ? "A practical decision scorer using impact, effort, and confidence." : "Small help, right moment. A trusted relay board for tiny errands that are too small for a full service, but too important to forget."}</p>
               <div style={{ display: "flex", flexWrap: "wrap", gap: 10, marginTop: 22 }}><span className="tag">Website</span><span className="tag">Mobile friendly</span><span className="tag">MVP shipped</span></div>
             </article>
           </a>
         ))}
       </section>
 
-      <footer className="footer"><span>© 2026 GOKUL.AI · DAILY BUILDS</span><span>DAY 13 LIVE</span><a href="/">BACK TO PORTFOLIO ↑</a></footer>
+      <footer className="footer"><span>© 2026 GOKUL.AI · DAILY BUILDS</span><span>DAY 14 LIVE</span><a href="/">BACK TO PORTFOLIO ↑</a></footer>
     </main>
   );
 }
