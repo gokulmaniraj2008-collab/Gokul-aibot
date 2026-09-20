@@ -5,6 +5,7 @@ const days = [
   ["Day 14", "RouteReady", "Travel readiness planner", "/days/day-14"],
   ["Day 15", "DataLens", "CSV shape and quality inspector", "/days/day-15"],
   ["Day 16", "CropCue", "Agriculture field planning companion", "/days/day-16"],
+  ["Day 17", "NeighbourNote", "Community micro-help request board", "/days/day-17"],
 ];
 
 export default function DaysPage() {
@@ -28,14 +29,14 @@ export default function DaysPage() {
             <article className="feature large" style={{ minHeight: index === days.length - 1 ? 360 : 240, padding: 32, borderRadius: 28 }}>
               <div className="eyebrow">{day} · {category.toUpperCase()}</div>
               <h2 style={{ margin: "18px 0 12px", fontSize: "clamp(34px,6vw,64px)", letterSpacing: "-.05em" }}>{title}</h2>
-              <p className="days-muted" style={{ maxWidth: 680, lineHeight: 1.8, margin: 0 }}>{title === "RouteReady" ? "A travel readiness planner that turns a vague trip into a calm, checkable launch plan." : title === "PromptPocket" ? "A lightweight prompt workbench for tightening instructions before you paste them into an AI workflow." : title === "DecisionDeck" ? "A practical decision scorer using impact, effort, and confidence." : title === "DataLens" ? "A browser-only CSV inspector for checking shape, missing values, and numeric density before analysis." : title === "CropCue" ? "A field planning companion for estimating water rhythm, harvest window, and readiness from practical inputs." : "Small help, right moment. A trusted relay board for tiny errands that are too small for a full service, but too important to forget."}</p>
+              <p className="days-muted" style={{ maxWidth: 680, lineHeight: 1.8, margin: 0 }}>{title === "RouteReady" ? "A travel readiness planner that turns a vague trip into a calm, checkable launch plan." : title === "PromptPocket" ? "A lightweight prompt workbench for tightening instructions before you paste them into an AI workflow." : title === "DecisionDeck" ? "A practical decision scorer using impact, effort, and confidence." : title === "DataLens" ? "A browser-only CSV inspector for checking shape, missing values, and numeric density before analysis." : title === "CropCue" ? "A field planning companion for estimating water rhythm, harvest window, and readiness from practical inputs." : title === "NeighbourNote" ? "A tiny local request board for errands, check-ins, and shared support." : "Small help, right moment. A trusted relay board for tiny errands that are too small for a full service, but too important to forget."}</p>
               <div style={{ display: "flex", flexWrap: "wrap", gap: 10, marginTop: 22 }}><span className="tag">Website</span><span className="tag">Mobile friendly</span><span className="tag">MVP shipped</span></div>
             </article>
           </a>
         ))}
       </section>
 
-      <footer className="footer"><span>© 2026 GOKUL.AI · DAILY BUILDS</span><span>DAY 16 BUILDING</span><a href="/">BACK TO PORTFOLIO ↑</a></footer>
+      <footer className="footer"><span>© 2026 GOKUL.AI · DAILY BUILDS</span><span>DAY 17 SHIPPED</span><a href="/">BACK TO PORTFOLIO ↑</a></footer>
     </main>
   );
 }
