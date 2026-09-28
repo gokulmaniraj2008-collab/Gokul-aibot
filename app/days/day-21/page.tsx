@@ -1,0 +1,17 @@
+"use client";
+import {useMemo,useState} from "react";
+
+const SIZE=3;
+function shuffle(){
+ const arr=Array.from({length:SIZE*SIZE},(_,i)=>i+1);
+ for(let i=arr.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[arr[i],arr[j]]=[arr[j],arr[i]]}
+ return arr;
+}
+export default function MiniGridPage(){
+ const [tiles,setTiles]=useState([1,2,3,4,5,6,7,8,9]);
+ const [moves,setMoves]=useState(0);
+ const done=useMemo(()=>tiles.every((v,i)=>v===i+1),[tiles]);
+ const reset=()=>{setTiles(shuffle());setMoves(0)};
+ const tap=(index:number)=>{if(done)return; const next=[...tiles]; const row=Math.floor(index/SIZE), col=index%SIZE; const neighbors=[[row-1,col],[row+1,col],[row,col-1],[row,col+1]]; for(const [r,c] of neighbors){if(r>=0&&r<SIZE&&c>=0&&c<SIZE){const ni=r*SIZE+c; if(next[ni]===9){[next[index],next[ni]]=[next[ni],next[index]];setTiles(next);setMoves(m=>m+1);break}}}};
+ return <main className="page"><style>{`*{box-sizing:border-box}.page{min-height:100vh;background:#f4f1ea;color:#20242a;padding:24px 16px 56px;font-family:Inter,system-ui,sans-serif}.shell{max-width:880px;margin:auto}.back{color:#7a7d75;text-decoration:none;font-size:13px}.eyebrow{margin-top:42px;font-size:11px;font-weight:900;letter-spacing:.16em;color:#878d84}.hero h1{font-size:clamp(46px,8vw,84px);line-height:.92;letter-spacing:-.07em;margin:12px 0 16px}.hero em{font-style:normal;color:#7a63d2}.intro{max-width:620px;color:#747a73;line-height:1.75}.grid{display:grid;grid-template-columns:1fr .9fr;gap:18px;margin-top:32px}.panel{background:#fffdf9;border:1px solid #e0dbd0;border-radius:26px;padding:22px}.board{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.tile{aspect-ratio:1;border:0;border-radius:18px;background:#ece6ff;color:#49348a;font-size:28px;font-weight:900;cursor:pointer}.tile.empty{background:#22272c;color:#fff}.stats{display:grid;gap:12px}.stat{padding:16px;border-radius:18px;background:#f1ece4}.stat strong{display:block;font-size:34px;letter-spacing:-.06em}.button{border:0;border-radius:14px;padding:13px 15px;background:#22272c;color:#fff;font-weight:800;cursor:pointer}.success{margin-top:14px;padding:14px;border-radius:16px;background:#e8f5eb;color:#2d5a39}@media(max-width:720px){.grid{grid-template-columns:1fr}.tile{font-size:24px}}`}</style><div className="shell"><a className="back" href="/days">← Daily Builds</a><div className="eyebrow">DAY 21 · GAME</div><div className="hero"><h1>Make room.<br/><em>Think one move ahead.</em></h1><p className="intro">MiniGrid is a tiny sliding puzzle for short focus breaks. Put every tile back in order with the fewest moves you can.</p></div><div className="grid"><section className="panel"><div className="board">{tiles.map((tile,index)=><button key={tile} className={"tile "+(tile===9?"empty":"")} onClick={()=>tap(index)} aria-label={tile===9?"Empty space":"Tile "+tile}>{tile===9?"":tile}</button>)}</div></section><aside className="panel"><div className="stats"><div className="stat"><div className="eyebrow" style={{marginTop:0}}>MOVES</div><strong>{moves}</strong></div><div className="stat"><div className="eyebrow" style={{marginTop:0}}>GOAL</div><strong>1 → 9</strong></div><button className="button" onClick={reset}>Shuffle puzzle</button></div>{done&&<div className="success"><b>Nice solve.</b> You finished the grid in {moves} moves.</div>}<p className="intro" style={{fontSize:13,marginTop:16}}>Tip: tap a tile next to the dark square. The board stays local to this page.</p></aside></div></div></main>
+}
