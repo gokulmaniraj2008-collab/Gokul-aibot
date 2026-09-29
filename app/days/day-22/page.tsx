@@ -1,0 +1,22 @@
+"use client";
+import {useMemo,useState} from "react";
+import Link from "next/link";
+
+const recipes={
+  "Quick vegetarian":["Lemon rice bowl","Cucumber curd salad","Roasted peanut crunch"],
+  "High-protein":["Egg & paneer wrap","Moong chaat","Yogurt fruit cup"],
+  "Budget-friendly":["Dal rice comfort bowl","Spiced potato toast","Banana oats cup"],
+};
+
+export default function PlatePilot(){
+  const [style,setStyle]=useState<keyof typeof recipes>("Quick vegetarian");
+  const [time,setTime]=useState(25);
+  const [servings,setServings]=useState(2);
+  const plan=useMemo(()=>recipes[style].map((name,i)=>({name,time:Math.max(8,Math.round(time/(i+2))),servings})),[style,time,servings]);
+  const total=plan.reduce((a,b)=>a+b.time,0);
+  return <main className="page" style={{minHeight:"100vh",padding:"24px 16px 56px",background:"#f7f4ee",color:"#272c2e",fontFamily:"Inter,system-ui,sans-serif"}}>
+    <style>{`*{box-sizing:border-box}.shell{max-width:980px;margin:auto}.back{color:#6d756f;text-decoration:none;font-size:13px;display:inline-block;margin-bottom:36px}.eyebrow{font-size:11px;letter-spacing:.16em;font-weight:900;color:#8c7a5d}h1{font-size:clamp(46px,8vw,84px);line-height:.94;letter-spacing:-4px;margin:12px 0 18px}h1 em{font-style:normal;color:#ba6b3f}.intro{max-width:650px;color:#73786f;line-height:1.7;font-size:15px}.grid{display:grid;grid-template-columns:1.02fr .98fr;gap:18px;margin-top:34px}.panel{background:#fffdf8;border:1px solid #e4ddd2;border-radius:26px;padding:22px;box-shadow:0 16px 32px rgba(74,59,40,.05)}.panel h2{margin:0 0 16px;font-size:20px;letter-spacing:-.8px}.label{display:block;font-size:12px;font-weight:800;color:#70776f;margin:12px 0 8px}.select,.range{width:100%}.select{border:1px solid #dcd6ca;border-radius:14px;padding:13px 14px;background:#fbfaf6;font:inherit}.range{accent-color:#ba6b3f}.metric{display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid #eee8de}.metric:last-child{border-bottom:0}.metric b{font-size:13px}.metric span{font-weight:900}.chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}.chip{font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;border-radius:999px;padding:7px 9px;background:#f1e9dd;color:#8e6e4c}.meal{display:flex;justify-content:space-between;gap:14px;align-items:center;padding:14px 0;border-bottom:1px solid #eee8de}.meal:last-child{border-bottom:0}.meal h3{margin:0 0 4px;font-size:16px}.muted{color:#787f76;font-size:13px;line-height:1.5}.total{margin-top:16px;padding:15px 16px;border-radius:18px;background:#2f3836;color:#f5f2ea;display:flex;justify-content:space-between;gap:12px}.total strong{font-size:28px;letter-spacing:-1px;color:#ffd7ae}@media(max-width:760px){.grid{grid-template-columns:1fr}h1{letter-spacing:-3px}.panel{padding:18px}}`}</style>
+    <div className="shell"><Link href="/days" className="back">← Daily Builds</Link><div className="eyebrow">DAY 22 · LIFESTYLE PLANNER</div><h1>Plan the plate.<br/><em>Free the evening.</em></h1><p className="intro">PlatePilot turns the ingredients of a busy day into a small, realistic meal plan—without pretending every dinner needs a spreadsheet.</p>
+    <div className="grid"><section className="panel"><h2>Set the shape of your day</h2><label className="label">Meal style</label><select className="select" value={style} onChange={e=>setStyle(e.target.value as keyof typeof recipes)}>{Object.keys(recipes).map(k=><option key={k}>{k}</option>)}</select><label className="label">Time available · {time} min</label><input className="range" type="range" min="15" max="60" value={time} onChange={e=>setTime(Number(e.target.value))}/><label className="label">Servings · {servings}</label><input className="range" type="range" min="1" max="6" value={servings} onChange={e=>setServings(Number(e.target.value))}/><div className="chips"><span className="chip">Simple</span><span className="chip">Local-first</span><span className="chip">No API</span></div></section>
+    <aside className="panel"><h2>Tonight's plan</h2>{plan.map(m=><div className="meal" key={m.name}><div><h3>{m.name}</h3><div className="muted">{m.servings} serving{m.servings>1?"s":""} · {m.time} min</div></div><span className="chip">Step {plan.indexOf(m)+1}</span></div>)}<div className="total"><span>Total active time</span><strong>{total}m</strong></div><p className="muted" style={{marginTop:14}}>A plan should make the next action obvious. Swap the order, save the idea, and keep moving.</p></aside></div></div></main>;
+}
